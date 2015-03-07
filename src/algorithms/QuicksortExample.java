@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class QuicksortExample {
 
-    private static int[] a = {22,15,12,13,11,20,18,22,14,30};
+    private static int[] a = {22,15,12,13,11,20,18,};
     public static void main(String[] args) {
         // Get a random generated array
         sort();
@@ -45,7 +45,12 @@ public class QuicksortExample {
         int partition = partition(left, right, pivot);
 
         // Recursively, calls the quicksort with the different left and right parameters of the sub-array
-        quickSort(left, partition-1);
+        System.out.println("Partitioning from " + left + " to " + (partition-1));
+        /**
+         * Left node left, partition -1 should trigger the equals to case for (left >= right): Return case
+         */
+        quickSort(left, partition - 1);
+        System.out.println("--Partitioning from " + (partition+1) + " to " + right);
         quickSort(partition + 1, right);
     }
 

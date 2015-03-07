@@ -11,15 +11,16 @@ package compSciProject;
  *
  */
 public class PC extends Creature {
-    private int respect = 40;
+    private int respect = 10;
 
     public PC(String name, String description, Room whereAt) {
         super(name, description, whereAt);
     }
 
     //Never used for player...Current string is just a place holder
-    public void leaveRoom() {
+    public int leaveRoom() {
         //Notify all animals of user entry method will be inserted in here...
+        return 0;
     }
 
     //Override forceModify method
@@ -28,7 +29,15 @@ public class PC extends Creature {
     }
 
     public void forceModify(String state) {
-        this.getRoom().iGameStateChange(state);
+        getRoom().iGameStateChange(state);
+    }
+    public String react(){
+        if(respect<40){
+            return "Why doesn't anyone like me...?...\n";
+        }
+        else{
+            return " I rule you all! ";
+        }
     }
 
     //implement incrementer somehow
@@ -36,7 +45,7 @@ public class PC extends Creature {
         return respect;
     }
 
-    public void addRepect() {
+    public void addRespect() {
         this.respect++;
     }
 

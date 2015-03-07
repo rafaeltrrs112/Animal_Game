@@ -1,4 +1,4 @@
-package compSciProject;
+package compSciProject.gameTools;
 
 /**
  * Created by Rafael on 2/9/2015.

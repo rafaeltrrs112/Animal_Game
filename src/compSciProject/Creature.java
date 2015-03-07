@@ -32,7 +32,7 @@ public abstract class Creature {
         this.currRoom = currRoom;
     }
     //Voluntary leave room
-    public void leaveRoom(){
+    public int leaveRoom(){
         for (Door x : getRoom().getDoors()) {
             Room r = x.getLeadTo();
             if (!r.isFull()) {
@@ -43,38 +43,39 @@ public abstract class Creature {
                 if (modifyRoom(r)!=-1) {
                     r.addCreature(this);
                     System.out.println(this.getName() + " entered " + getRoom().getName());
-                    return;
+                    break;
                 }
                 else {
-                    System.out.println(getName() + " half dirtied " + getRoom().getName());
                     r.setState(Room.HALF_DIRTY);
                     r.addCreature(this);
-                    return;
+                    System.out.println(getName() + " half dirtied " + r.getName());
+                    break;
                 }
             }
         }
+        return -1;
     }
     //Used to kick an animal out to a specific room
     //Force leave room.
-    public void leaveRoom(Room r){
+    public int leaveRoom(Room r){
         System.out.println(getName() + " now in: " + getRoom().getName());
         if (modifyRoom(r)!=-1) {
             getRoom().removeCreature(this);
             r.addCreature(this);
             System.out.println(this.getName() + " entered " + getRoom().getName());
+            return 0;
         }
         else {
             System.out.println(getName() + " half dirtied " + r.getName());
             r.setState(Room.HALF_DIRTY);
             getRoom().removeCreature(this);
             r.addCreature(this);
+            return -1;
 
         }
     }
-    //Room modifier method for most all modifications.
-    //Use isinstaceof or polymorphism? Not sure yet. Did change to using this
-    //is instance of here though...waiting on feedback before making change.
     abstract int modifyRoom(Room peek);
+    abstract String react();
 
 
     public String toString() {

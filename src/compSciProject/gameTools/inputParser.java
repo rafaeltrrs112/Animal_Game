@@ -3,8 +3,9 @@
  * Input Parser for .XML input file
  *
  */
-package compSciProject;
+package compSciProject.gameTools;
 
+import compSciProject.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

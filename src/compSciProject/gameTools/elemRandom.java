@@ -1,4 +1,6 @@
-package compSciProject;
+package compSciProject.gameTools;
+
+import compSciProject.Door;
 
 import java.util.Random;
 
@@ -8,7 +10,7 @@ import java.util.Random;
  * place all little utility classes in their
  * own package later to keep program more organized.
  */
-class elemRandom {
+public class elemRandom {
     static Random ranGen = new Random();
 
     public static Door[] randRooms(Door[] roomList) {

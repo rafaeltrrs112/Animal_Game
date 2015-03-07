@@ -1,4 +1,6 @@
-package compSciProject;
+package compSciProject.gameTools;
+
+import compSciProject.Door;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -7,11 +9,22 @@ import java.util.Scanner;
  *
  */
 public class InputVerifier {
-        static String[] commands = {"help","look","clean","dirty","north",
-                             "east","south","west","exit","move"};
+        static String[] commands = {"kick","help","look","clean","dirty","north",
+                             "east","south","west","exit","move", Door.NORTH,Door.SOUTH,
+                              Door.EAST,Door.WEST};
+
+        static String[] commandsOther;
 
         public static boolean isValid(String input){
             for(String x:commands){
+                if(input.equals(x)){
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static boolean isValidOther(String input){
+            for(String x:commandsOther){
                 if(input.equals(x)){
                     return true;
                 }
@@ -28,6 +41,19 @@ public class InputVerifier {
             if(!isValid(entry))
                 System.out.println("Command must be valid!");
         } while (!isValid(entry));
+        return entry;
+    }
+
+    public static String getStringInput(String[] commandCheck) {
+        commandsOther = commandCheck;
+        Scanner scanner = new Scanner(System.in);
+        String entry;
+        System.out.println("Enter a command: ");
+        do {
+            entry = scanner.nextLine();
+            if(!isValidOther(entry))
+                System.out.println("Command must be valid!");
+        } while (!isValidOther(entry));
         return entry;
     }
 

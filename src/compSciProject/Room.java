@@ -1,5 +1,7 @@
 package compSciProject;
 
+import compSciProject.gameTools.elemRandom;
+
 import java.util.Arrays;
 
 import static java.lang.System.arraycopy;
@@ -168,7 +170,7 @@ public class Room {
 
     public void setPlayer(PC player) {
         //Add an extra population parameter, one for population of NPC and ANIMALS
-        //  and the player. Set it seperately so that it doesn't affect the animal population
+        //  and the player. Set it separately so that it doesn't affect the animal population
         //   that is used as a sentinel variable called: population.
         System.out.println("Player " + player.getName() + " has entered the room " + this.name);
         this.player = player;
@@ -224,4 +226,5 @@ public class Room {
                     displayDoors();
         }
     }
+
 }

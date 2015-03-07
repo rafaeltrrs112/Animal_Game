@@ -23,6 +23,9 @@ public class Door {
     public Room getLeadTo() {
         return leadTo;
     }
+    public String getPosition(){
+        return position;
+    }
 
     public String toString() {
         if (position == null)
