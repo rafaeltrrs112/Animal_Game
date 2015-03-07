@@ -2,6 +2,8 @@
 package compSciProject;
 
 import compSciProject.gameTools.*;
+import compSciProject.gameTools.InputVerifier;
+import jdk.internal.util.xml.impl.Input;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -27,21 +29,14 @@ public class Driver {
      * place the user there. If room is full it will be caught in the
      * program and user will be notified of this.
      */
-    public void chooseRoomTest(){
-        String[] entryArray = {Door.NORTH,Door.EAST,Door.SOUTH,Door.WEST};
-        Door doors[] = player.getRoom().userGetDoors();
-        System.out.println("Where would you like to go?...");
-        for (int i = 0; i < doors.length; i++) {
-            System.out.println("Door: " + (i + 1) + " :" + player.getRoom().userGetDoors()[i]);
-        }
-        String input = compSciProject.gameTools.InputVerifier.getStringInput(entryArray);
+    public void chooseRoomTest(String inputPosition){
         for(Door door:player.getRoom().userGetDoors()){
-            if(door.getPosition().equals(input)){
+            if(door.getPosition().equals(inputPosition)){
                 if(door.getLeadTo().isFull()){
                     System.out.println(door.getLeadTo().getName() + " is full..Cannot enter");
                     return;
                 }
-                System.out.println("Going to " + input);
+                System.out.println("Going to " + inputPosition);
                 door.getLeadTo().setPlayer(player);
                 player.setRoom(door.getLeadTo());
                 return;
@@ -74,7 +69,7 @@ public class Driver {
         for (int i = 0; i < doors.length; i++) {
             System.out.println("Door: " + (i + 1) + " :" + player.getRoom().userGetDoors()[i]);
         }
-        doorChoice = (compSciProject.gameTools.InputVerifier.getIntRange(doors.length)-1);
+        doorChoice = (compSciProject.gameTools.InputVerifier.getIntRange(doors.length) - 1);
         occupants[creatureChoice].leaveRoom(doors[doorChoice].getLeadTo());
     }
 
@@ -132,40 +127,46 @@ public class Driver {
             System.out.println(displayStatus());
             userChoice = compSciProject.gameTools.InputVerifier.getStringInput();
             //In Room commands
-            switch (userChoice) {
-                case "kick": {
-                    if (player.getRoom().isEmpty()) {
-                        System.out.println("\nRoom is Empty No One to Kick Out\n");
+            String []choiceInit = userChoice.split(":");
+            if(choiceInit.length == 1) {
+                if(InputVerifier.isPosit(choiceInit[0])){
+                    chooseRoomTest(choiceInit[0]);
+                }
+                switch (choiceInit[0]) {
+                    case "kick": {
+                        if (player.getRoom().isEmpty()) {
+                            System.out.println("\nRoom is Empty No One to Kick Out\n");
+                            break;
+                        }
+                        kickOut();
                         break;
                     }
-                    kickOut();
-                    break;
+                    case "look": {
+                        System.out.println(player.getRoom());
+                        wait.nextLine();
+                        break;
+                    }
+                    case "clean": {
+                        playerChangeRoomState(Room.CLEAN);
+                        wait.nextLine();
+                        break;
+                    }
+                    case "dirty": {
+                        playerChangeRoomState(Room.DIRTY);
+                        wait.nextLine();
+                        break;
+                    }
+                    case "help": {
+                        System.out.println(helpMessage());
+                        wait.nextLine();
+                        break;
+                    }
                 }
-                case "move": {
-                    chooseRoomTest();
-                    wait.nextLine();
-                    break;
-                }
-                case "look": {
-                    System.out.println(player.getRoom());
-                    wait.nextLine();
-                    break;
-                }
-                case "clean": {
-                    playerChangeRoomState(Room.CLEAN);
-                    wait.nextLine();
-                    break;
-                }
-                case "dirty":{
-                    playerChangeRoomState(Room.DIRTY);
-                    wait.nextLine();
-                    break;
-                }
-                case "help":{
-                    System.out.println(helpMessage());
-                    wait.nextLine();
-                    break;
-                }
+            }
+            if(userChoice.length() == 2){
+                /**
+                 * TODO Implement colon separated string input for creature movement.
+                 */
             }
         }
         if(gameOver()!=0){
@@ -201,7 +202,7 @@ public class Driver {
         return
                         "\nMain Menu Options" +
                         "\nEnter 'kick' to Kick out an animal!\n" +
-                        "Enter 'move' to Move around\n" +
+                        "Enter 'north,south,east, or west' to Move around\n" +
                         "Enter 'look' to Display data of Room: "
                                 + player.getRoom().getName() + "\n" +
                         "Enter 'clean' to sweep the room " +  player.getRoom().getName() + "\n" +

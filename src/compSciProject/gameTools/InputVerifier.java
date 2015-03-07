@@ -9,9 +9,9 @@ import java.util.Scanner;
  *
  */
 public class InputVerifier {
-        static String[] commands = {"kick","help","look","clean","dirty","north",
-                             "east","south","west","exit","move", Door.NORTH,Door.SOUTH,
-                              Door.EAST,Door.WEST};
+    static String[] commands = {"kick","help","look","clean","dirty",
+                                    "exit","move",Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST};
+    static String[] positions = {Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST};
 
         static String[] commandsOther;
 
@@ -31,7 +31,8 @@ public class InputVerifier {
             }
             return false;
         }
-
+        //Used for initial inputs of any size. This does not deal with
+        //split strings.
         public static String getStringInput() {
         Scanner scanner = new Scanner(System.in);
         String entry;
@@ -43,7 +44,7 @@ public class InputVerifier {
         } while (!isValid(entry));
         return entry;
     }
-
+    //TODO optimize using binary search and quick sort
     public static String getStringInput(String[] commandCheck) {
         commandsOther = commandCheck;
         Scanner scanner = new Scanner(System.in);
@@ -56,7 +57,13 @@ public class InputVerifier {
         } while (!isValidOther(entry));
         return entry;
     }
-
+    public static boolean isPosit(String input){
+        for(String s: positions){
+            if (input.equals(s))
+                return true;
+        }
+        return false;
+    }
     public static int getIntRange(int max) {
         Scanner sc = new Scanner(System.in);
         int entry;
