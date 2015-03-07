@@ -14,6 +14,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
+/**
+ * TODO implement SAX parser before handing in for HW2 box.
+ */
 public class inputParser {
     private PC currCharacter;
 
