@@ -161,9 +161,24 @@ public class Driver {
                         wait.nextLine();
                         break;
                     }
+                    case "sort":{
+                        player.getRoom().sort();
+                    }
                 }
             }
-            if(userChoice.length() == 2){
+            if(choiceInit.length == 2){
+                System.out.println("in second");
+                player.getRoom().sort();
+                if(player.getRoom().search(choiceInit[0])!=-1 &&
+                        (choiceInit[1].equals(Room.CLEAN) || choiceInit[1].equals(Room.DIRTY))){
+                    /**
+                     * TODO Check if second command is valid...If it is then enter a switch that
+                     * TODO triggers a certain forced action by an animal.
+                     */
+                    //Makes the animals do the specified command.
+                    System.out.println(choiceInit[0]);
+                    System.out.println(choiceInit[1]);
+                }
                 /**
                  * TODO Implement colon separated string input for creature movement.
                  */

@@ -186,6 +186,9 @@ public class Room {
     public Creature[] getOccupants() {
         return Arrays.copyOfRange(occupants, 0, population);
     }
+    public int getPopulation(){
+        return population;
+    }
 
     //Print out all doors to user. Return a error message if there are none.
     private String displayOccupants() {
@@ -211,6 +214,17 @@ public class Room {
             doorDescription += x.toString() + " \n";
         }
         return doorDescription;
+    }
+
+    /**
+     * Sort and search algorithms for later part of assignment
+     */
+    public void sort(){
+        quickSortSelf.sortArray(occupants, population);
+    }
+    public int search(String key){
+        binarySearch searcher = new binarySearch();
+        return searcher.startSearch(occupants,key,population);
     }
 
     /**

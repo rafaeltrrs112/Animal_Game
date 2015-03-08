@@ -10,12 +10,15 @@ import java.util.Scanner;
  */
 public class InputVerifier {
     static String[] commands = {"kick","help","look","clean","dirty",
-                                    "exit","move",Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST};
+                                    "exit","move",Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST,"sort"};
     static String[] positions = {Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST};
 
         static String[] commandsOther;
 
         public static boolean isValid(String input){
+            if(input.split(":").length==2){
+                return true;
+            }
             for(String x:commands){
                 if(input.equals(x)){
                     return true;
@@ -24,6 +27,9 @@ public class InputVerifier {
             return false;
         }
         public static boolean isValidOther(String input){
+            if(input.split(":").length==2){
+                return true;
+            }
             for(String x:commandsOther){
                 if(input.equals(x)){
                     return true;

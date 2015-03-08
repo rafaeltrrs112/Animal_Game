@@ -1,4 +1,4 @@
-package algorithms;
+package compSciProject;
 
 /**
  * Created by Rtorres on 3/7/2015.
@@ -9,13 +9,13 @@ package algorithms;
  * TODO make algorithms sort Creature array.
  */
 public class binarySearch {
-    final int KEY_NOT_FOUND =100;
-    public int startSearch(int[] arr, int keyFind){
-        return search(arr, keyFind, 0, arr.length-1);
+    final int KEY_NOT_FOUND = -1;
+    public int startSearch(Creature[] arr, String keyFind, int population){
+        return search(arr, keyFind, 0, population-1);
     }
 
     //Initially invoked with parameters imin = 0 and imax = n-1;
-    public int search(int[] A, int key, int imin, int imax){
+    public int search(Creature[] A, String key, int imin, int imax){
 
         //test if array is empty
         if(imax<imin)
@@ -26,11 +26,11 @@ public class binarySearch {
             int imid = midpoint(imin, imax);
 
             //three way comparison
-            if(A[imid] > key)
+            if(A[imid].getName().compareTo(key) > 0)
                 //key is in lower subset
                 return search(A,key,imin,imid-1);
             //determine which sub array to search.
-            else if(A[imid]<key)
+            else if(A[imid].getName().compareTo(key)<0)
                 //key is in upper subset
                 return search(A,key,imid+1,imax);
             else
@@ -44,22 +44,6 @@ public class binarySearch {
     }
 
     public static void main(String[] args) {
-        int[] arrayTest = {1,3,5,4,10,7,4,8,5};
-        quickSortSelf.sortArray(arrayTest);
-        for(int x:arrayTest){
-            System.out.print(x + " ");
-        }
-        System.out.println();
-        binarySearch test = new binarySearch();
-        int min = 5;
-        int max = 9;
-        int findIndex = test.startSearch(arrayTest, 5);
-        System.out.println(findIndex);
-        String splitter = "name:dog:animal";
-        String noSplitter = "holar";
-        String []testIt = splitter.split(":");
-        String []testNoSplit = noSplitter.split(":");
-        System.out.println(java.util.Arrays.toString(testIt));
-        System.out.println(java.util.Arrays.toString(testNoSplit));
+
     }
 }
