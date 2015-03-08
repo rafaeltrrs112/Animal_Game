@@ -32,6 +32,9 @@ public class NPC extends Creature {
             getRoom().getPlayer().addRespect();
         }
         return reaction;
-
+    }
+    public String react(String forceTask){
+        getRoom().iGameStateChange(forceTask);
+        return react();
     }
 }

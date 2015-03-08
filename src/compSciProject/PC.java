@@ -11,7 +11,7 @@ package compSciProject;
  *
  */
 public class PC extends Creature {
-    private int respect = 10;
+    private int respect = 40;
 
     public PC(String name, String description, Room whereAt) {
         super(name, description, whereAt);
@@ -28,9 +28,6 @@ public class PC extends Creature {
         return 0;
     }
 
-    public void forceModify(String state) {
-        getRoom().iGameStateChange(state);
-    }
     public String react(){
         if(respect<40){
             return "Why doesn't anyone like me...?...\n";
@@ -40,7 +37,6 @@ public class PC extends Creature {
         }
     }
 
-    //implement incrementer somehow
     public int getRespect() {
         return respect;
     }

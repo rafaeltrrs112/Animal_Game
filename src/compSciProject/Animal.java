@@ -35,4 +35,6 @@ public class Animal extends Creature {
 
         return reaction;
     }
+
+
 }

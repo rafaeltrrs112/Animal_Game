@@ -76,6 +76,11 @@ public abstract class Creature {
     }
     abstract int modifyRoom(Room peek);
     abstract String react();
+    public String react(String forceTask){
+        getRoom().iGameStateChange(forceTask);
+        return react();
+    }
+
 
 
     public String toString() {

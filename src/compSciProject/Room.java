@@ -186,6 +186,9 @@ public class Room {
     public Creature[] getOccupants() {
         return Arrays.copyOfRange(occupants, 0, population);
     }
+    public String forceInhabitant(int indexOf, String action){
+        return occupants[indexOf].react(action);
+    }
     public int getPopulation(){
         return population;
     }
@@ -214,6 +217,14 @@ public class Room {
             doorDescription += x.toString() + " \n";
         }
         return doorDescription;
+    }
+
+    public int getDoorIndex(String find){
+        for(int i=0;i<userGetDoors().length;i++){
+            if (userGetDoors()[i].getPosition().equals(find))
+                return i;
+        }
+        return -1;
     }
 
     /**

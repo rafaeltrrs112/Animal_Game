@@ -3,7 +3,6 @@ package compSciProject;
 
 import compSciProject.gameTools.*;
 import compSciProject.gameTools.InputVerifier;
-import jdk.internal.util.xml.impl.Input;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -50,27 +49,25 @@ public class Driver {
      * an animal out of the room. The animal will change
      * the room they are being kicked too if they don't like it!
      */
-    public void kickOut() {
+    public void kickOut(int creatureChoice , String doorChoice) {
+        /**
+         * TODO Animal moves to the room but does not react.
+         * todo Make it so that the animal reacts depending on
+         * todo the state of the room
+         */
         Creature[] occupants = player.getRoom().getOccupants();
         Door doors[] = player.getRoom().userGetDoors();
-        int creatureChoice;
-        int doorChoice;
+
         if (player.getRoom().isEmpty()) {
             System.out.println("Room is empty!");
             return;
         }
-
-        System.out.println("Who would you like to interact with?\n Enter *Number* corresponding to animals");
-        for (int i = 0; i < occupants.length; i++) {
-            System.out.println((i + 1) + " :" + occupants[i]);
+        int doorChoiceIndex = (player.getRoom().getDoorIndex(doorChoice));
+        if(doorChoiceIndex==-1){
+            System.out.println("Invalid command!");
+            return;
         }
-        creatureChoice = (compSciProject.gameTools.InputVerifier.getIntRange(occupants.length)-1);
-        System.out.println("To Where?.. \n ");
-        for (int i = 0; i < doors.length; i++) {
-            System.out.println("Door: " + (i + 1) + " :" + player.getRoom().userGetDoors()[i]);
-        }
-        doorChoice = (compSciProject.gameTools.InputVerifier.getIntRange(doors.length) - 1);
-        occupants[creatureChoice].leaveRoom(doors[doorChoice].getLeadTo());
+        occupants[creatureChoice].leaveRoom(doors[doorChoiceIndex].getLeadTo());
     }
 
     /*
@@ -133,17 +130,11 @@ public class Driver {
                     chooseRoomTest(choiceInit[0]);
                 }
                 switch (choiceInit[0]) {
-                    case "kick": {
-                        if (player.getRoom().isEmpty()) {
-                            System.out.println("\nRoom is Empty No One to Kick Out\n");
-                            break;
-                        }
-                        kickOut();
-                        break;
-                    }
+                    //TODO Remove kick from here. It should work as a compound input case below.
                     case "look": {
                         System.out.println(player.getRoom());
                         wait.nextLine();
+
                         break;
                     }
                     case "clean": {
@@ -169,15 +160,40 @@ public class Driver {
             if(choiceInit.length == 2){
                 System.out.println("in second");
                 player.getRoom().sort();
-                if(player.getRoom().search(choiceInit[0])!=-1 &&
-                        (choiceInit[1].equals(Room.CLEAN) || choiceInit[1].equals(Room.DIRTY))){
+                int indexFound = player.getRoom().search(choiceInit[0]);
+                if(indexFound!=-1){
                     /**
                      * TODO Check if second command is valid...If it is then enter a switch that
                      * TODO triggers a certain forced action by an animal.
+                     * TODO implement forceAction method in Creature that forces the Creature to act.
                      */
                     //Makes the animals do the specified command.
                     System.out.println(choiceInit[0]);
                     System.out.println(choiceInit[1]);
+                    switch(choiceInit[1]){
+                        case "clean":{
+                            System.out.println(player.getRoom().forceInhabitant(indexFound,Room.CLEAN));
+                            System.out.println("in clean");
+                            System.out.println("Animal " + choiceInit[0] + "  " + choiceInit[1] + " s");
+                            notifyCreatures();
+                            break;
+                        }
+                        case "dirty":{
+                            System.out.println(player.getRoom().forceInhabitant(indexFound,Room.DIRTY));
+                            System.out.println("in dirty");
+                            System.out.println("Animal " + choiceInit[0] + "  " + choiceInit[1] + " s");
+                            notifyCreatures();
+                            break;
+                        }
+                        default : {
+                            if (player.getRoom().isEmpty()) {
+                                System.out.println("\nRoom is Empty No One to Kick Out\n");
+                                break;
+                            }
+                            kickOut(indexFound, choiceInit[1]);
+                            break;
+                        }
+                    }
                 }
                 /**
                  * TODO Implement colon separated string input for creature movement.
