@@ -24,8 +24,8 @@ public class Room {
     public static final String CLEAN = "clean";
     public static final String HALF_DIRTY = "half-dirty";
 
-    private final String name;
-    private final String description;
+    private  String name;
+    private  String description;
     private String state;
     private int population = 0;
     private int doorCount = 0;
@@ -34,6 +34,7 @@ public class Room {
     private PC player;
 
     //Only one constructor really necessary at the moment.
+    public Room(){}
     public Room(String name, String description, String state) {
         this.description = description;
         this.state = state;
