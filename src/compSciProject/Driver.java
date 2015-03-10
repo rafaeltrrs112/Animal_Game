@@ -106,10 +106,11 @@ public class Driver {
      * later.
      */
     public void runGame() {
-        inputParser parser = new inputParser();
+        RoomParserHandler.run(getInputFile());
         Room[] rooms;
-        rooms = parser.generateRooms(getInputFile());
-        player = parser.getPC();
+        rooms = RoomParserHandler.currentRoomPosit.getRooms();
+        player = RoomParserHandler.currentPlayer;
+        System.out.println("Player is " + player.getName());
         for (Room x : rooms) {
             System.out.println(x);
         }
@@ -133,27 +134,28 @@ public class Driver {
                     //TODO Remove kick from here. It should work as a compound input case below.
                     case "look": {
                         System.out.println(player.getRoom());
+                        System.out.print("Enter any key to continue");
                         wait.nextLine();
 
                         break;
                     }
                     case "clean": {
                         playerChangeRoomState(Room.CLEAN);
+                        System.out.print("Enter any key to continue");
                         wait.nextLine();
                         break;
                     }
                     case "dirty": {
                         playerChangeRoomState(Room.DIRTY);
+                        System.out.print("Enter any key to continue");
                         wait.nextLine();
                         break;
                     }
                     case "help": {
                         System.out.println(helpMessage());
+                        System.out.print("Enter any key to continue");
                         wait.nextLine();
                         break;
-                    }
-                    case "sort":{
-                        player.getRoom().sort();
                     }
                 }
             }
@@ -173,24 +175,29 @@ public class Driver {
                     switch(choiceInit[1]){
                         case "clean":{
                             System.out.println(player.getRoom().forceInhabitant(indexFound,Room.CLEAN));
-                            System.out.println("in clean");
                             System.out.println("Animal " + choiceInit[0] + "  " + choiceInit[1] + " s");
                             notifyCreatures();
+                            System.out.print("Enter any key to continue");
+                            wait.nextLine();
                             break;
                         }
                         case "dirty":{
                             System.out.println(player.getRoom().forceInhabitant(indexFound,Room.DIRTY));
-                            System.out.println("in dirty");
                             System.out.println("Animal " + choiceInit[0] + "  " + choiceInit[1] + " s");
                             notifyCreatures();
+                            System.out.print("Enter any key to continue");
+                            wait.nextLine();
                             break;
                         }
                         default : {
                             if (player.getRoom().isEmpty()) {
                                 System.out.println("\nRoom is Empty No One to Kick Out\n");
+
                                 break;
                             }
                             kickOut(indexFound, choiceInit[1]);
+                            System.out.print("Enter any key to continue");
+                            wait.nextLine();
                             break;
                         }
                     }
@@ -238,7 +245,8 @@ public class Driver {
                         "Enter 'clean' to sweep the room " +  player.getRoom().getName() + "\n" +
                         "Enter 'dirty' to throw mud in the room\n" +
                         "Enter 'exit' to quit the game\n" +
-                        "Enter animal name: desired action to make an animal do something";
+                        "Enter animal name: desired action to make an animal do something\n" +
+                        "Enter 'help' to display Game Info and Commands";
     }
     public String gameBanner(){
         return
@@ -320,7 +328,7 @@ public class Driver {
                 "\t<!> Animals and Creatures who cannot leave a room they do not like will leave the room and the player will\n" +
                 "\t    leave through the roof and DI...I mean...walk away...IF ALL ANIMALS ARE GONE GAME OVER\n" +
                 "\t<!> RESPECT ZERO and game will be OVER!!!!!!\n" +
-                mainMessage() + "\nENTER ANY KEY TO CONTINUE..." ;
+                mainMessage();
     }
 
     public static void main(String[] args) {

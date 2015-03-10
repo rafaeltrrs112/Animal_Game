@@ -9,8 +9,8 @@ import java.util.Scanner;
  *
  */
 public class InputVerifier {
-    static String[] commands = {"kick","help","look","clean","dirty",
-                                    "exit","move",Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST,"sort"};
+    static String[] commands = {"help","look","clean","dirty",
+                                    "exit",Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST,"sort"};
     static String[] positions = {Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST};
 
         static String[] commandsOther;

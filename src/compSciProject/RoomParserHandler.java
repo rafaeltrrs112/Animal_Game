@@ -8,37 +8,41 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
 import java.util.*;
+import java.io.File;
 
 class RoomParserHandler extends DefaultHandler {
-    Room currentRoom;
-    private HashMap<String, String> roomFieldMap = new HashMap<>();
-    private HashMap<String, String> creatureFieldMap = new HashMap<>();
-    public HashMap<String, Room> roomMap = new HashMap<>();
-    public String[] roomPositions = {Door.NORTH, Door.SOUTH, Door.EAST, Door.WEST};
+    static Room currentRoom;
+    static HashMap<String, String> roomFieldMap = new HashMap<>();
+    static HashMap<String, String> creatureFieldMap = new HashMap<>();
+    static HashMap<String, Room> roomMap = new HashMap<>();
+    static String[] roomPositions = {Door.NORTH, Door.SOUTH, Door.EAST, Door.WEST};
+    static roomHolder currentRoomPosit = new roomHolder();
+    static PC currentPlayer;
 
 
-    public roomHolder currentRoomPosit = new roomHolder();
-
-
-
-    public static void main(String[] args) {
+    public static void run(File inputFile){
         try{
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser parser = factory.newSAXParser();
             RoomParserHandler handler = new RoomParserHandler();
-            parser.parse("input.xml", handler);
-            System.out.println(handler.roomMap.get("Violet"));
-            handler.currentRoomPosit.setRoomList(handler.roomMap);
-            handler.currentRoomPosit.addNeighbors();
-            handler.currentRoomPosit.printFinishedRooms();
+            parser.parse(inputFile, handler);
+            System.out.println(roomMap.get("Violet"));
+            currentRoomPosit.setRoomList(roomMap);
+            currentRoomPosit.addNeighbors();
+            currentRoomPosit.printFinishedRooms();
+            currentRoomPosit.getRooms();
         }
-        catch (Exception e){
-            e.printStackTrace();
+        catch (org.xml.sax.SAXException|javax.xml.parsers.ParserConfigurationException exc){
+            System.out.println("Error Parsing File");
+        }
+        catch(IOException exc){
+            System.out.println("Error Obtaining File");
         }
     }
 
-    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
+    public  void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
 
         int attributeLength = attributes.getLength();
         if("room".equals(qName)){
@@ -59,6 +63,7 @@ class RoomParserHandler extends DefaultHandler {
                 }
             }
         }
+        roomFieldMap.clear();
         if("animal".equals(qName)){
             for(int i = 0;i<attributeLength;i++){
                 String attrName = attributes.getQName(i);
@@ -83,7 +88,9 @@ class RoomParserHandler extends DefaultHandler {
                 String attrVal = attributes.getValue(i);
                 creatureFieldMap.put(attrName, attrVal);
             }
-            roomMap.get(currentRoom.getName()).addCreature(new PC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
+            PC currentPlayer = (new PC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
+            currentRoom.setPlayer(currentPlayer);
+            RoomParserHandler.currentPlayer = currentPlayer;
             System.out.println(currentRoom);
         }
     }
