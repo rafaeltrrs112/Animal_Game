@@ -30,8 +30,8 @@ public class inputParser {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            //Document doc = dBuilder.parse(inputFile);
-            Document doc = dBuilder.parse("input.xml");
+            Document doc = dBuilder.parse(inputFile);
+            //Document doc = dBuilder.parse("input.xml");
 
             String[] posits = {Door.EAST, Door.NORTH, Door.SOUTH, Door.WEST};
 

@@ -232,13 +232,13 @@ public class Driver {
     public String mainMessage() {
         return
                         "\nMain Menu Options" +
-                        "\nEnter 'kick' to Kick out an animal!\n" +
                         "Enter 'north,south,east, or west' to Move around\n" +
                         "Enter 'look' to Display data of Room: "
                                 + player.getRoom().getName() + "\n" +
                         "Enter 'clean' to sweep the room " +  player.getRoom().getName() + "\n" +
                         "Enter 'dirty' to throw mud in the room\n" +
-                        "Enter 'exit' to quit the game";
+                        "Enter 'exit' to quit the game\n" +
+                        "Enter animal name: desired action to make an animal do something";
     }
     public String gameBanner(){
         return

@@ -32,7 +32,6 @@ public class quickSortSelf {
         quickSort(partition+1,right);
     }
     public static void swap(int left, int right){
-        System.out.println(" Swapping " + array[left] + " with " + array[right] +"\n");
         Creature temp = array[left];
         array[left] = array[right];
         array[right] = temp;
