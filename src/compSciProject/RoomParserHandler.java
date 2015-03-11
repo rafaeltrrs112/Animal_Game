@@ -28,10 +28,8 @@ class RoomParserHandler extends DefaultHandler {
             SAXParser parser = factory.newSAXParser();
             RoomParserHandler handler = new RoomParserHandler();
             parser.parse(inputFile, handler);
-            System.out.println(roomMap.get("Violet"));
             currentRoomPosit.setRoomList(roomMap);
             currentRoomPosit.addNeighbors();
-            currentRoomPosit.printFinishedRooms();
             currentRoomPosit.getRooms();
         }
         catch (org.xml.sax.SAXException|javax.xml.parsers.ParserConfigurationException exc){
@@ -45,6 +43,8 @@ class RoomParserHandler extends DefaultHandler {
     public  void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
 
         int attributeLength = attributes.getLength();
+        //Insert a switch statement here instead of a bunch of if's.
+        String create = qName;
         if("room".equals(qName)){
             for(int i=0;i<attributeLength;i++){
 

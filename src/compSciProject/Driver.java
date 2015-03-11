@@ -1,7 +1,6 @@
 //Driver test class.
 package compSciProject;
 
-import compSciProject.gameTools.*;
 import compSciProject.gameTools.InputVerifier;
 
 import javax.swing.*;
