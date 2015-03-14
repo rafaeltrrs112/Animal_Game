@@ -1,9 +1,5 @@
 package compSciProject;
 
-/*
- * Created by Rafael on 2/5/2015.
- * Class: Animal
- */
 public abstract class Creature {
     private String name;
     private String description;
@@ -14,14 +10,8 @@ public abstract class Creature {
         this.description = description;
         this.currRoom = currRoom;
     }
-
-
     public String getName() {
         return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public Room getRoom() {
@@ -31,7 +21,6 @@ public abstract class Creature {
     public void setRoom(Room currRoom) {
         this.currRoom = currRoom;
     }
-    //Voluntary leave room
     public int leaveRoom(){
         for (Door x : getRoom().getDoors()) {
             Room r = x.getLeadTo();
@@ -52,8 +41,7 @@ public abstract class Creature {
         }
         return -1;
     }
-    //Used to kick an animal out to a specific room
-    //Force leave room.
+
     public int leaveRoom(Room r){
         if (modifyRoom(r)!=-1) {
             getRoom().removeCreature(this);
@@ -68,13 +56,15 @@ public abstract class Creature {
 
         }
     }
-    abstract int modifyRoom(Room peek);
-    abstract String react();
     public String react(String forceTask){
         getRoom().iGameStateChange(forceTask);
         return react();
     }
 
+    int modifyRoom(Room peek){
+        return peek.getState().equals(Room.HALF_DIRTY) ? 0 : -1;
+    }
+    abstract String react();
 
 
     public String toString() {

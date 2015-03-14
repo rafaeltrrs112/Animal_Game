@@ -1,4 +1,3 @@
-//Driver test class.
 package compSciProject;
 
 import compSciProject.gameTools.InputVerifier;
@@ -27,7 +26,7 @@ public class Driver {
      * place the user there. If room is full it will be caught in the
      * program and user will be notified of this.
      */
-    public void chooseRoomTest(String inputPosition){
+    public void playerMove(String inputPosition){
         for(Door door:player.getRoom().userGetDoors()){
             if(door.getPosition().equals(inputPosition)){
                 if(door.getLeadTo().isFull()){
@@ -48,7 +47,7 @@ public class Driver {
      * an animal out of the room. The animal will change
      * the room they are being kicked too if they don't like it!
      */
-    public void kickOut(int creatureChoice , String doorChoice) {
+    public void creatureForceMove(int creatureChoice, String doorChoice) {
         /**
          * TODO Animal moves to the room but does not react.
          * todo Make it so that the animal reacts depending on
@@ -87,7 +86,7 @@ public class Driver {
      * File chooser used here allows the user to select a file from their desktop
      * Will save code to use in later projects for other types of input files.
      */
-    public File getInputFile() {
+    public File fileChooserGUI() {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter XMLFILTER = new FileNameExtensionFilter(
                 "xml files (*.xml)", "xml");
@@ -105,7 +104,7 @@ public class Driver {
      * later.
      */
     public void runGame() {
-        RoomParserHandler.run(getInputFile());
+        RoomParserHandler.run(fileChooserGUI());
         Room[] rooms;
         rooms = RoomParserHandler.currentRoomPosit.getRooms();
         player = RoomParserHandler.currentPlayer;
@@ -119,15 +118,15 @@ public class Driver {
          * modified later to take in a string. Though an integer is less confusing for debugging
          * right now.
          */
-        System.out.println(gameBanner() + "\n" + mainMessage());
-        while (!userChoice.equals("exit") && gameOver()==0) {
+        System.out.println(introBanner() + "\n" + mainMenuMessage());
+        while (!userChoice.equals("exit") && playerGameStatus()==0) {
             System.out.println(displayStatus());
             userChoice = compSciProject.gameTools.InputVerifier.getStringInput();
             //In Room commands
             String []choiceInit = userChoice.split(":");
             if(choiceInit.length == 1) {
                 if(InputVerifier.isPosit(choiceInit[0])){
-                    chooseRoomTest(choiceInit[0]);
+                    playerMove(choiceInit[0]);
                 }
                 switch (choiceInit[0]) {
                     //TODO Remove kick from here. It should work as a compound input case below.
@@ -194,7 +193,7 @@ public class Driver {
 
                                 break;
                             }
-                            kickOut(indexFound, choiceInit[1]);
+                            creatureForceMove(indexFound, choiceInit[1]);
                             System.out.print("Enter any key to continue");
                             wait.nextLine();
                             break;
@@ -206,23 +205,19 @@ public class Driver {
                  */
             }
         }
-        if(gameOver()!=0){
+        if(playerGameStatus()!=0){
             System.out.println("\t\t\t\t\tGame Over You Lose\n" + gameOverBanner());
         }
     }
 
-    public int gameOver(){
+    public int playerGameStatus(){
         if(player.getRespect()<0)
             return -1;
         if(player.getRespect()==80)
             return 1;
         return 0;
     }
-    /*
-     * May put all menus message in one method, get menu
-     * class later...for now they are out on their own and can
-     * be returned depending on the message need...will implement later.
-     */
+
     public String displayStatus() {
         return  "\n----------------<|Current Status|>------------------\n" +
                 "| Name: "  + player.getName() +
@@ -232,10 +227,7 @@ public class Driver {
                 "----------------------------------------------------";
     }
 
-    /*
-     * Create a string array of messages used in the game to make code cleaner
-     */
-    public String mainMessage() {
+    public String mainMenuMessage() {
         return
                         "\nMain Menu Options" +
                         "Enter 'north,south,east, or west' to Move around\n" +
@@ -247,7 +239,45 @@ public class Driver {
                         "Enter animal name: desired action to make an animal do something\n" +
                         "Enter 'help' to display Game Info and Commands";
     }
-    public String gameBanner(){
+    public String helpMessage(){
+        return " HELP INFO   *****\n" +
+                " Game: CS241 Animal Game\n " +
+                "By:Rafael O. Torres\n\n" +
+                "Game Description ****\n" +
+                "\tAnimal game is a text based adventure game. Sort of like a cooler version of pokemon\n" +
+                "\tYour name is " + player.getName() + " and you have been chosen to live in the great Animal House\n" +
+                "\tThe inhabitants of this house are creatures of two types: the clean ANIMALS and the musky stank NPCS (Humans)\n" +
+                "\tJust like in the wild humans like mud, dirt, old candy wrappers, slimy goo, and all sorts of nasty things\n" +
+                "\tAs the Great Leader of the People....I mean as the player, you " + player.getName() + " have the great powers of\n" +
+                "\thousekeeping and un-keeping\n" +
+                "\tBeing the indecisive and sadistic individual that I am sure you are, you may want to prod, irritate, and damn right annoy\n" +
+                "\tthe denizens of this world...**BUT!!!!!!!**\n" +
+                "\tBeware, piss of the animals too much and you will lose...CHOOSE SIDES and make the right allies and you GREAT LEA...I mean...\n" +
+                "\t...." + player.getName() + " will win the eighty points of respect and win the grand prize of a STRING METHOD DISPLAYING YOUR GLORY\n" +
+                "\tBUT!!!!!!.....If you fail to pick sides, and lose all your creatures or!!!! Lose all their respect and you will REACH THE RET...I mean lose the game\n" +
+
+                "\nHOW TO PLAY****\n" +
+
+                "Name: " + player.getName() + " \n" +
+                "Respect: " + player.getRespect() + " \n " +
+                "\nObjective****\n" +
+                "\t<[:)>Gain 80 respect points to win the game" +
+                "\tTo gain respect the inhabitants in your current room happy and they will award with\n" +
+                "\tone respect for your kindness.\n" +
+                "\t<!> Animals will give respect for CLEANING a room they are in. Or making them clean it.\n" +
+                "\tNPCs will give respect for DIRTYING a room they are in. Or making them clean it.\n" +
+                "\tAnimal and NPCs will deduct respect if a rooms state is changed toward their undesired state...\n" +
+                "\tUNDESIRED STATES are DIRTY and CLEAN, for NPCs and ANIMALS respectively.\n" +
+                "\tMove through the rooms and interact with the rooms inhabitants.\n" +
+                "\t<!> Rooms can contain only up to ten players...\n" +
+
+                "\t\nGAME OVER****************\n" +
+                "\t<!> Animals and Creatures who cannot leave a room they do not like will leave the room and the player will\n" +
+                "\t    leave through the roof and DI...I mean...walk away...IF ALL ANIMALS ARE GONE GAME OVER\n" +
+                "\t<!> RESPECT ZERO and game will be OVER!!!!!!\n" +
+                mainMenuMessage();
+    }
+    public String introBanner(){
         return
         "                               ,-.             __\n" +
                 "                             ,'   `---.___.---'  `.\n" +
@@ -291,44 +321,7 @@ public class Driver {
                         "      ;                            ;;+_  :::. :..;;;\n" +
                         "                                   ;;;;;;,;;;;;;;;,;";
     }
-    public String helpMessage(){
-        return " HELP INFO   *****\n" +
-                " Game: CS241 Animal Game\n " +
-                "By:Rafael O. Torres\n\n" +
-                "Game Description ****\n" +
-                "\tAnimal game is a text based adventure game. Sort of like a cooler version of pokemon\n" +
-                "\tYour name is " + player.getName() + " and you have been chosen to live in the great Animal House\n" +
-                "\tThe inhabitants of this house are creatures of two types: the clean ANIMALS and the musky stank NPCS (Humans)\n" +
-                "\tJust like in the wild humans like mud, dirt, old candy wrappers, slimy goo, and all sorts of nasty things\n" +
-                "\tAs the Great Leader of the People....I mean as the player, you " + player.getName() + " have the great powers of\n" +
-                "\thousekeeping and un-keeping\n" +
-                "\tBeing the indecisive and sadistic individual that I am sure you are, you may want to prod, irritate, and damn right annoy\n" +
-                "\tthe denizens of this world...**BUT!!!!!!!**\n" +
-                "\tBeware, piss of the animals too much and you will lose...CHOOSE SIDES and make the right allies and you GREAT LEA...I mean...\n" +
-                "\t...." + player.getName() + " will win the eighty points of respect and win the grand prize of a STRING METHOD DISPLAYING YOUR GLORY\n" +
-                "\tBUT!!!!!!.....If you fail to pick sides, and lose all your creatures or!!!! Lose all their respect and you will REACH THE RET...I mean lose the game\n" +
 
-                "\nHOW TO PLAY****\n" +
-
-                "Name: " + player.getName() + " \n" +
-                "Respect: " + player.getRespect() + " \n " +
-                "\nObjective****\n" +
-                "\t<[:)>Gain 80 respect points to win the game" +
-                "\tTo gain respect the inhabitants in your current room happy and they will award with\n" +
-                "\tone respect for your kindness.\n" +
-                "\t<!> Animals will give respect for CLEANING a room they are in. Or making them clean it.\n" +
-                "\tNPCs will give respect for DIRTYING a room they are in. Or making them clean it.\n" +
-                "\tAnimal and NPCs will deduct respect if a rooms state is changed toward their undesired state...\n" +
-                "\tUNDESIRED STATES are DIRTY and CLEAN, for NPCs and ANIMALS respectively.\n" +
-                "\tMove through the rooms and interact with the rooms inhabitants.\n" +
-                "\t<!> Rooms can contain only up to ten players...\n" +
-
-                "\t\nGAME OVER****************\n" +
-                "\t<!> Animals and Creatures who cannot leave a room they do not like will leave the room and the player will\n" +
-                "\t    leave through the roof and DI...I mean...walk away...IF ALL ANIMALS ARE GONE GAME OVER\n" +
-                "\t<!> RESPECT ZERO and game will be OVER!!!!!!\n" +
-                mainMessage();
-    }
 
     public static void main(String[] args) {
         Driver runGame = new Driver();

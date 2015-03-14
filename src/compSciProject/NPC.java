@@ -33,8 +33,4 @@ public class NPC extends Creature {
         }
         return reaction;
     }
-    public String react(String forceTask){
-        getRoom().iGameStateChange(forceTask);
-        return react();
-    }
 }

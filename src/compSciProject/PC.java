@@ -17,14 +17,8 @@ public class PC extends Creature {
         super(name, description, whereAt);
     }
 
-    //Never used for player...Current string is just a place holder
     public int leaveRoom() {
-        //Notify all animals of user entry method will be inserted in here...
-        return 0;
-    }
-
-    //Override forceModify method
-    public int modifyRoom(Room r) {
+        getRoom().removeCreature(this);
         return 0;
     }
 

@@ -8,7 +8,6 @@ public class Animal extends Creature {
     public int modifyRoom(Room peek){
         String check = peek.getState();
         if (check.equals(Room.DIRTY)) {
-            getRoom().getPlayer().decRespect();
             return -1;
         }
         else if(check.equals(Room.CLEAN)){
@@ -35,6 +34,4 @@ public class Animal extends Creature {
 
         return reaction;
     }
-
-
 }
