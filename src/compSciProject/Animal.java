@@ -21,16 +21,19 @@ public class Animal extends Creature {
             reaction += " growls at " + getRoom().getPlayer().getName();
             getRoom().getPlayer().decRespect();
             if (getRoom().getState().equals(Room.DIRTY)) {
+                if(leaveRoom().equals(Creature.DEAD)) {
+                    getRoom().removeCreature(this);
+                    this.setRoom(new Room("Roof"," Animal Heaven", Room.CLEAN));
+                    return reaction + " and exits through the roof";
+                }
                 reaction += " and leaves the room...";
-                getRoom().getPlayer().decRespect();
-                leaveRoom();
                 return reaction;
             }
         }
         else{
             reaction += " licks the face of " + getRoom().getPlayer().getName();
+            getRoom().getPlayer().addRespect();
         }
-        getRoom().getPlayer().addRespect();
 
         return reaction;
     }

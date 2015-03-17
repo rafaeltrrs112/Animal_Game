@@ -4,6 +4,7 @@ public abstract class Creature {
     private String name;
     private String description;
     private Room currRoom;
+    static final String DEAD = "DEAD";
 
     public Creature(String name, String description, Room currRoom) {
         this.name = name;
@@ -21,40 +22,44 @@ public abstract class Creature {
     public void setRoom(Room currRoom) {
         this.currRoom = currRoom;
     }
-    public int leaveRoom(){
+    //TODO: If all rooms full then creature leaves room to nowhere
+    //Returns -1 if creature was not able to find a room to enter.
+    public String leaveRoom(){
+        int checkAll = getRoom().getDoors().length;
         for (Door x : getRoom().getDoors()) {
+            checkAll++;
             Room r = x.getLeadTo();
             if (!r.isFull()) {
                 getRoom().removeCreature(this);
-                //Remove these print statements after main Driver program
-                //proves they are all complete
                 if (modifyRoom(r)!=-1) {
                     r.addCreature(this);
-                    break;
+                    return "CREATURE EXITING";
                 }
                 else {
                     r.setState(Room.HALF_DIRTY);
                     r.addCreature(this);
-                    break;
+                    return "CREATURE ENTERING/STATE CHANGE: HALF DIRTY";
                 }
             }
         }
-        return -1;
+        return DEAD;
     }
 
-    public int leaveRoom(Room r){
+    public String leaveRoom(Room r){
         if (modifyRoom(r)!=-1) {
             getRoom().removeCreature(this);
             r.addCreature(this);
-            return 0;
+            return getName() + " content with room ";
         }
-        else {
+        else if(modifyRoom(r) == 0) {
             r.setState(Room.HALF_DIRTY);
             getRoom().removeCreature(this);
             r.addCreature(this);
-            return -1;
+            return getName() + " had to change the room state ";
 
         }
+        return getName() + " was unable to leave the room and crawled out through" +
+                " the ceiling";
     }
     public String react(String forceTask){
         getRoom().iGameStateChange(forceTask);

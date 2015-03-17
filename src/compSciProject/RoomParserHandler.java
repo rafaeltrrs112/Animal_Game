@@ -43,8 +43,6 @@ class RoomParserHandler extends DefaultHandler {
     public  void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
 
         int attributeLength = attributes.getLength();
-        //Insert a switch statement here instead of a bunch of if's.
-        String create = qName;
         if("room".equals(qName)){
             for(int i=0;i<attributeLength;i++){
 

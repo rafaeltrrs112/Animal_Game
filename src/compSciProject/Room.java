@@ -90,7 +90,10 @@ public class Room {
         occupants[remIndex] = occupants[population];
         occupants[population] = null;
     }
-
+    public void removeCreature(PC pc){
+        System.out.println("PC LEAVING!!!");
+        player = null;
+    }
     /**
      * *** Is full and Is Empty status check methods ***
      * Most methods that modify the state of a room or look
@@ -115,13 +118,15 @@ public class Room {
      * wants. The restrictions for how the room state changes
      * according to project rules have been implement...
      */
-    public void iGameStateChange(String state) {
+    public String iGameStateChange(String state) {
         if (this.state.equals(Room.HALF_DIRTY)) {
             this.state = state;
+            return state;
         } else if (this.state.equals(state)) {
-            System.out.println("Can't make room: " + state + "er ");
+            return("Can't make room: " + state + "er ");
         } else {
             this.state = Room.HALF_DIRTY;
+            return state;
         }
     }
     /**
@@ -131,15 +136,12 @@ public class Room {
      */
     public void addCreature(Creature creature) {
         if (isFull()) {
-            System.out.println("Room " + name + " is full\n" +
-                    "Cannot add: " + creature.getName());
             return;
         }
         occupants[population] = creature;
         population++;
         creature.setRoom(this);
     }
-
 
     /**
      * Setters and getters for members. Some simpler than others
@@ -191,7 +193,7 @@ public class Room {
         return occupants[indexOf].react(action);
     }
     public int getPopulation(){
-        return population;
+        return player!=null ? population+1 : population;
     }
 
     //Print out all doors to user. Return a error message if there are none.
@@ -200,11 +202,13 @@ public class Room {
             return name + " is empty";
         }
         String roster = "";
+        if(player!=null){
+            roster += player.toString() + "\n";
+        }
         for (int i = 0; i < population; i++)
             roster += occupants[i].toString() + "\n";
         return roster;
     }
-
     /**
      * Returns a formatted string will all door information and number
      * in the array to the screen.
@@ -245,10 +249,10 @@ public class Room {
      */
     public String toString() {
         if (population > 0)
-            return name + ": " + description + "\nOccupants" + "[" + population + "]...\n"
+            return name + ": " + description + "\nOccupants" + "[" + getPopulation() + "]...\n"
                     + displayOccupants() + displayDoors();
         else {
-            return name + ": " + description + "\nOccupants" + "[" + population + "]" + "\n" +
+            return name + ": " + description + "\nOccupants" + "[" + getPopulation() + "]" + "\n" +
                     displayDoors();
         }
     }

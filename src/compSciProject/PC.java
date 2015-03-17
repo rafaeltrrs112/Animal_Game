@@ -1,15 +1,5 @@
 package compSciProject;
 
-/**
- * Created by Rafael on 2/9/2015.
- * Not much has been added to this class yet. Still have not
- * decided whether the PC class should exist simply for the
- * user to manipulate through the driver or whether the class will
- * user more of the driver methods itself...?
- *
- * Remove all print statements after Driver proves that all methods work
- *
- */
 public class PC extends Creature {
     private int respect = 40;
 
@@ -17,9 +7,9 @@ public class PC extends Creature {
         super(name, description, whereAt);
     }
 
-    public int leaveRoom() {
+    public String leaveRoom() {
         getRoom().removeCreature(this);
-        return 0;
+        return "Leaving !";
     }
 
     public String react(){

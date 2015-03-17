@@ -21,9 +21,12 @@ public class NPC extends Creature {
             reaction += " grumbles at " + getRoom().getPlayer().getName();
             getRoom().getPlayer().decRespect();
             if (getRoom().getState().equals(Room.CLEAN)) {
+                if(leaveRoom().equals(Creature.DEAD)){
+                    getRoom().removeCreature(this);
+                    this.setRoom(new Room("Roof", " NPC Heaven", Room.DIRTY));
+                    return reaction + " and exits through the roof";
+                }
                 reaction += " and leaves the room...";
-                getRoom().getPlayer().decRespect();
-                leaveRoom();
                 return reaction;
             }
         }

@@ -11,7 +11,6 @@ public class Driver {
     public String userChoice = "";
     private PC player;
     static Scanner wait = new Scanner(System.in);
-
     /*
      * Empty constructor for Driver class. Driver class
      * will be placed in a Main class once all methods are sorted out
@@ -19,7 +18,6 @@ public class Driver {
      */
     public Driver() {
     }
-    //Verifier method to get input for use in menu and verify it.
     /*
      * Choose door method allows the player
      * to choose which door they would like to go and then
@@ -41,38 +39,36 @@ public class Driver {
         }
         System.out.println("Invalid room position selected!");
     }
-
     /*
      * Kick out method for allowing the player to force
      * an animal out of the room. The animal will change
      * the room they are being kicked too if they don't like it!
      */
     public void creatureForceMove(int creatureChoice, String doorChoice) {
-        /**
-         * TODO Animal moves to the room but does not react.
-         * todo Make it so that the animal reacts depending on
-         * todo the state of the room
-         */
         Creature[] occupants = player.getRoom().getOccupants();
         Door doors[] = player.getRoom().userGetDoors();
 
-        if (player.getRoom().isEmpty()) {
-            System.out.println("Room is empty!");
-            return;
-        }
+
         int doorChoiceIndex = (player.getRoom().getDoorIndex(doorChoice));
         if(doorChoiceIndex==-1){
             System.out.println("Invalid command!");
             return;
         }
+        else if(doors[doorChoiceIndex].getLeadTo().isFull()){
+            System.out.println("Room Full Cannot Kick!");
+            return;
+        }
         occupants[creatureChoice].leaveRoom(doors[doorChoiceIndex].getLeadTo());
     }
-
     /*
      * Here they player can change the state of the room they are in.
      * Animals do not respond to the room change yet!
      */
     public void playerChangeRoomState(String state) {
+        if(player.getRoom().getState().equals(state)) {
+            System.out.println(player.getRoom().iGameStateChange(state));
+            return;
+        }
         player.getRoom().iGameStateChange(state);
         notifyCreatures();
     }
@@ -97,7 +93,6 @@ public class Driver {
         chooser.setFileFilter(XMLFILTER);
         return chooser.getSelectedFile();
     }
-
     /*
      * Run game method in driver. Currently made to take in simple integers for user
      * input to allow for easy debugging. String input verification that be implemented
@@ -129,12 +124,10 @@ public class Driver {
                     playerMove(choiceInit[0]);
                 }
                 switch (choiceInit[0]) {
-                    //TODO Remove kick from here. It should work as a compound input case below.
                     case "look": {
                         System.out.println(player.getRoom());
                         System.out.print("Enter any key to continue");
                         wait.nextLine();
-
                         break;
                     }
                     case "clean": {
@@ -158,18 +151,9 @@ public class Driver {
                 }
             }
             if(choiceInit.length == 2){
-                System.out.println("in second");
                 player.getRoom().sort();
                 int indexFound = player.getRoom().search(choiceInit[0]);
                 if(indexFound!=-1){
-                    /**
-                     * TODO Check if second command is valid...If it is then enter a switch that
-                     * TODO triggers a certain forced action by an animal.
-                     * TODO implement forceAction method in Creature that forces the Creature to act.
-                     */
-                    //Makes the animals do the specified command.
-                    System.out.println(choiceInit[0]);
-                    System.out.println(choiceInit[1]);
                     switch(choiceInit[1]){
                         case "clean":{
                             System.out.println(player.getRoom().forceInhabitant(indexFound,Room.CLEAN));
@@ -200,9 +184,6 @@ public class Driver {
                         }
                     }
                 }
-                /**
-                 * TODO Implement colon separated string input for creature movement.
-                 */
             }
         }
         if(playerGameStatus()!=0){
@@ -229,7 +210,7 @@ public class Driver {
 
     public String mainMenuMessage() {
         return
-                        "\nMain Menu Options" +
+                        "\nMain Menu Options\n" +
                         "Enter 'north,south,east, or west' to Move around\n" +
                         "Enter 'look' to Display data of Room: "
                                 + player.getRoom().getName() + "\n" +
@@ -321,7 +302,6 @@ public class Driver {
                         "      ;                            ;;+_  :::. :..;;;\n" +
                         "                                   ;;;;;;,;;;;;;;;,;";
     }
-
 
     public static void main(String[] args) {
         Driver runGame = new Driver();

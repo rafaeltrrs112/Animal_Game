@@ -6,7 +6,7 @@ package compSciProject;
  * Binary search algorithm uses divide and conquer to continuously cut the
  * array in half on the condition whether the value is less or greater than
  * value being searched for. Array must already be sorted for binarySearch to work.
- * TODO make algorithms sort Creature array.
+ *
  */
 public class binarySearch {
     final int KEY_NOT_FOUND = -1;

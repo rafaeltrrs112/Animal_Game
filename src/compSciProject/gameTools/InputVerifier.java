@@ -50,7 +50,6 @@ public class InputVerifier {
         } while (!isValid(entry));
         return entry;
     }
-    //TODO optimize using binary search and quick sort
     public static String getStringInput(String[] commandCheck) {
         commandsOther = commandCheck;
         Scanner scanner = new Scanner(System.in);
