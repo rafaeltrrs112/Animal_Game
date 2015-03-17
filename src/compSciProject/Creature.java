@@ -22,12 +22,9 @@ public abstract class Creature {
     public void setRoom(Room currRoom) {
         this.currRoom = currRoom;
     }
-    //TODO: If all rooms full then creature leaves room to nowhere
-    //Returns -1 if creature was not able to find a room to enter.
+
     public String leaveRoom(){
-        int checkAll = getRoom().getDoors().length;
         for (Door x : getRoom().getDoors()) {
-            checkAll++;
             Room r = x.getLeadTo();
             if (!r.isFull()) {
                 getRoom().removeCreature(this);

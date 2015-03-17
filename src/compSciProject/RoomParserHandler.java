@@ -41,55 +41,60 @@ class RoomParserHandler extends DefaultHandler {
     }
 
     public  void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
-
         int attributeLength = attributes.getLength();
-        if("room".equals(qName)){
-            for(int i=0;i<attributeLength;i++){
+        switch(qName) {
+            case "room":{
+                for (int i = 0; i < attributeLength; i++) {
 
-                String attrName = attributes.getQName(i);
-                String attrVal = attributes.getValue(i);
-                System.out.println(attrName + " = " + attrVal + "; ");
-                roomFieldMap.put(attrName, attrVal);
-            }
-            Room testRoom = new Room(roomFieldMap.get("name"), roomFieldMap.get("description"), roomFieldMap.get("state"));
-            currentRoom = testRoom;
-            roomMap.put(testRoom.getName(), testRoom);
-
-            for(String x: roomPositions){
-                if(roomFieldMap.containsKey(x)){
-                    currentRoomPosit.addRoomPosits(currentRoom.getName(), x, roomFieldMap.get(x));
+                    String attrName = attributes.getQName(i);
+                    String attrVal = attributes.getValue(i);
+                    System.out.println(attrName + " = " + attrVal + "; ");
+                    roomFieldMap.put(attrName, attrVal);
                 }
+                Room testRoom = new Room(roomFieldMap.get("name"), roomFieldMap.get("description"), roomFieldMap.get("state"));
+                currentRoom = testRoom;
+                roomMap.put(testRoom.getName(), testRoom);
+
+                for (String x : roomPositions) {
+                    if (roomFieldMap.containsKey(x)) {
+                        currentRoomPosit.addRoomPosits(currentRoom.getName(), x, roomFieldMap.get(x));
+                    }
+                }
+                roomFieldMap.clear();
+                break;
             }
-        }
-        roomFieldMap.clear();
-        if("animal".equals(qName)){
-            for(int i = 0;i<attributeLength;i++){
-                String attrName = attributes.getQName(i);
-                String attrVal = attributes.getValue(i);
-                creatureFieldMap.put(attrName, attrVal);
+            case "animal":{
+                for (int i = 0; i < attributeLength; i++) {
+                    String attrName = attributes.getQName(i);
+                    String attrVal = attributes.getValue(i);
+                    creatureFieldMap.put(attrName, attrVal);
+                }
+                roomMap.get(currentRoom.getName()).addCreature(new Animal(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
+                System.out.println(currentRoom);
+                break;
             }
-            roomMap.get(currentRoom.getName()).addCreature(new Animal(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
-            System.out.println(currentRoom);
-        }
-        if("NPC".equals(qName)){
-            for(int i = 0;i<attributeLength;i++){
-                String attrName = attributes.getQName(i);
-                String attrVal = attributes.getValue(i);
-                creatureFieldMap.put(attrName, attrVal);
+            case "NPC":{
+                for (int i = 0; i < attributeLength; i++) {
+                    String attrName = attributes.getQName(i);
+                    String attrVal = attributes.getValue(i);
+                    creatureFieldMap.put(attrName, attrVal);
+                }
+                roomMap.get(currentRoom.getName()).addCreature(new NPC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
+                System.out.println(currentRoom);
+                break;
             }
-            roomMap.get(currentRoom.getName()).addCreature(new NPC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
-            System.out.println(currentRoom);
-        }
-        if("PC".equals(qName)){
-            for(int i = 0;i<attributeLength;i++){
-                String attrName = attributes.getQName(i);
-                String attrVal = attributes.getValue(i);
-                creatureFieldMap.put(attrName, attrVal);
+            case "PC":{
+                for (int i = 0; i < attributeLength; i++) {
+                    String attrName = attributes.getQName(i);
+                    String attrVal = attributes.getValue(i);
+                    creatureFieldMap.put(attrName, attrVal);
+                }
+                PC currentPlayer = (new PC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
+                currentRoom.setPlayer(currentPlayer);
+                RoomParserHandler.currentPlayer = currentPlayer;
+                System.out.println(currentRoom);
+                break;
             }
-            PC currentPlayer = (new PC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
-            currentRoom.setPlayer(currentPlayer);
-            RoomParserHandler.currentPlayer = currentPlayer;
-            System.out.println(currentRoom);
         }
     }
 }

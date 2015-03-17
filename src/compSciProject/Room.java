@@ -33,8 +33,6 @@ public class Room {
     private Door[] doors = new Door[1];
     private PC player;
 
-    //Only one constructor really necessary at the moment.
-    public Room(){}
     public Room(String name, String description, String state) {
         this.description = description;
         this.state = state;
@@ -43,9 +41,8 @@ public class Room {
     }
 
     /**
-     * This method is used sort of to initialize the doors during parsing.
-     * Parser adds doors into there. There is no checking for any
-     * door count restriction...may not be needed...not sure yet.
+     *
+     * Add neighbor to Room using a growable array.
      */
     public void addNeighbor(Room roomNew, String posit) {
         if (doorCount == 0) {
