@@ -1,11 +1,8 @@
 package compSciProject;
 
 import compSciProject.gameTools.elemRandom;
-
 import java.util.Arrays;
-
 import static java.lang.System.arraycopy;
-
 /**
  * Room class holds up to ten occupants including the player!
  * Two arrays are made, one holds the NPCs the other holds the Animals
@@ -41,7 +38,6 @@ public class Room {
     }
 
     /**
-     *
      * Add neighbor to Room using a growable array.
      */
     public void addNeighbor(Room roomNew, String posit) {
@@ -88,7 +84,6 @@ public class Room {
         occupants[population] = null;
     }
     public void removeCreature(PC pc){
-        System.out.println("PC LEAVING!!!");
         player = null;
     }
     /**
@@ -103,9 +98,6 @@ public class Room {
     }
 
     public boolean isEmpty() {
-        if (occupants[0] == null && this.player != null) {
-            return true;
-        }
         return (population == 0);
     }
 
@@ -172,9 +164,9 @@ public class Room {
         //Add an extra population parameter, one for population of NPC and ANIMALS
         //  and the player. Set it separately so that it doesn't affect the animal population
         //   that is used as a sentinel variable called: population.
-        System.out.println("Player " + player.getName() + " has entered the room " + this.name);
+        //System.out.println("Player " + player.getName() + " has entered the room " + this.name);
         this.player = player;
-        System.out.println("Occupants in Current Room...\n" + this.displayOccupants() + "\n");
+        //System.out.println("Occupants in Current Room...\n" + this.displayOccupants() + "\n");
     }
 
     /**
@@ -195,7 +187,7 @@ public class Room {
 
     //Print out all doors to user. Return a error message if there are none.
     private String displayOccupants() {
-        if (isEmpty()) {
+        if (isEmpty() && player==null) {
             return name + " is empty";
         }
         String roster = "";
@@ -211,7 +203,6 @@ public class Room {
      * in the array to the screen.
      */
     private String displayDoors() {
-        System.out.println("Doors [" + doorCount + "]");
         String doorDescription = "";
         if (doorCount == 0)
             return doorDescription;
@@ -246,7 +237,7 @@ public class Room {
      */
     public String toString() {
         if (population > 0)
-            return name + ": " + description + "\nOccupants" + "[" + getPopulation() + "]...\n"
+            return "Room name: " + name + "\nDoors:" + "[" + doorCount + "]\n" + "Description : " + description + "\nOccupants" + "[" + getPopulation() + "]...\n"
                     + displayOccupants() + displayDoors();
         else {
             return name + ": " + description + "\nOccupants" + "[" + getPopulation() + "]" + "\n" +

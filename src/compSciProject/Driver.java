@@ -103,10 +103,10 @@ public class Driver {
         Room[] rooms;
         rooms = RoomParserHandler.currentRoomPosit.getRooms();
         player = RoomParserHandler.currentPlayer;
-        System.out.println("Player is " + player.getName());
-        for (Room x : rooms) {
-            System.out.println(x);
-        }
+        //System.out.println("Player is " + player.getName());
+        //for (Room x : rooms) {
+        //    System.out.println(x);
+        //}
 
         /*
          * Current version of switch statement runs on an integer case, may be

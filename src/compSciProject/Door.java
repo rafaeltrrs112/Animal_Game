@@ -28,7 +28,7 @@ public class Door {
     public String toString() {
         if (position == null)
             return null;
-        return position + " door leads to Room: " + this.leadTo.getName() +
+        return position.toUpperCase() + " door leads to Room: " + this.leadTo.getName() +
                 ", " + this.getLeadTo().getState();
     }
 }

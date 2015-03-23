@@ -48,7 +48,7 @@ class RoomParserHandler extends DefaultHandler {
 
                     String attrName = attributes.getQName(i);
                     String attrVal = attributes.getValue(i);
-                    System.out.println(attrName + " = " + attrVal + "; ");
+                    //System.out.println(attrName + " = " + attrVal + "; ");
                     roomFieldMap.put(attrName, attrVal);
                 }
                 Room testRoom = new Room(roomFieldMap.get("name"), roomFieldMap.get("description"), roomFieldMap.get("state"));
@@ -70,7 +70,7 @@ class RoomParserHandler extends DefaultHandler {
                     creatureFieldMap.put(attrName, attrVal);
                 }
                 roomMap.get(currentRoom.getName()).addCreature(new Animal(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
-                System.out.println(currentRoom);
+                //System.out.println(currentRoom);
                 break;
             }
             case "NPC":{
@@ -80,7 +80,7 @@ class RoomParserHandler extends DefaultHandler {
                     creatureFieldMap.put(attrName, attrVal);
                 }
                 roomMap.get(currentRoom.getName()).addCreature(new NPC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
-                System.out.println(currentRoom);
+                //System.out.println(currentRoom);
                 break;
             }
             case "PC":{
@@ -92,7 +92,7 @@ class RoomParserHandler extends DefaultHandler {
                 PC currentPlayer = (new PC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
                 currentRoom.setPlayer(currentPlayer);
                 RoomParserHandler.currentPlayer = currentPlayer;
-                System.out.println(currentRoom);
+                //System.out.println(currentRoom);
                 break;
             }
         }

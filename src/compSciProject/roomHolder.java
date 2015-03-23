@@ -28,7 +28,7 @@ public class roomHolder {
 
     }
     public  void addRoomPosits(String roomName, String neighborPosition, String neighborName){
-        System.out.println(roomName + " door : " + neighborPosition + " leads to room: " + neighborName);
+        //System.out.println(roomName + " door : " + neighborPosition + " leads to room: " + neighborName);
 
         if(!roomMap.containsKey(roomName)){
             roomMap.put(roomName, new HashMap<>());
@@ -51,7 +51,7 @@ public class roomHolder {
         Iterator it = roomMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            System.out.println(pair.getKey() + " " + pair.getValue());
+            //System.out.println(pair.getKey() + " " + pair.getValue());
             for(Room r: roomList){
                 if(pair.getKey().equals(r.getName())){
                     for(String x: roomPositions){

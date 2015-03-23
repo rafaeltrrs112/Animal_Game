@@ -11,7 +11,6 @@ package compSciProject;
  * 3. Recursively call the QuickSort to sort the right-sub array.
  *
  */
-
 public class quickSortSelf {
     private static Creature array[];
 
