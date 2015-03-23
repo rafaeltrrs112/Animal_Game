@@ -132,9 +132,6 @@ public class Room {
         creature.setRoom(this);
     }
 
-    /**
-     * Setters and getters for members. Some simpler than others
-     */
     public String getName() {
         return name;
     }
@@ -161,12 +158,7 @@ public class Room {
     }
 
     public void setPlayer(PC player) {
-        //Add an extra population parameter, one for population of NPC and ANIMALS
-        //  and the player. Set it separately so that it doesn't affect the animal population
-        //   that is used as a sentinel variable called: population.
-        //System.out.println("Player " + player.getName() + " has entered the room " + this.name);
         this.player = player;
-        //System.out.println("Occupants in Current Room...\n" + this.displayOccupants() + "\n");
     }
 
     /**
@@ -187,10 +179,10 @@ public class Room {
 
     //Print out all doors to user. Return a error message if there are none.
     private String displayOccupants() {
+        String roster = "";
         if (isEmpty() && player==null) {
             return name + " is empty";
         }
-        String roster = "";
         if(player!=null){
             roster += player.toString() + "\n";
         }
@@ -236,7 +228,7 @@ public class Room {
      * toStrings of other classes contained in the program.
      */
     public String toString() {
-        if (population > 0)
+        if (population > 0 || player!=null)
             return "Room name: " + name + "\nDoors:" + "[" + doorCount + "]\n" + "Description : " + description + "\nOccupants" + "[" + getPopulation() + "]...\n"
                     + displayOccupants() + displayDoors();
         else {
