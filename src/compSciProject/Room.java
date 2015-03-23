@@ -55,7 +55,6 @@ public class Room {
     }
 
     /**
-     * HI
      * Remove creature algorithm looks through the
      * array and pops out the animal that is being removed
      * Algorithm: Save index of animal that needs to be removed.
