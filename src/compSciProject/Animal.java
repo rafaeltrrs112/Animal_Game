@@ -25,9 +25,10 @@ public class Animal extends Creature {
             getRoom().getPlayer().decRespect();
             if (getRoom().getState().equals(Room.DIRTY)) {
                 if(leaveRoom().equals(Creature.DEAD)) {
+                    String creatureReactions = snitch();
                     getRoom().removeCreature(this);
                     this.setRoom(new Room("Roof"," Animal Heaven", Room.CLEAN));
-                    return reaction + Creature.DEATH;
+                    return reaction + Creature.DEATH + creatureReactions;
                 }
                 reaction += " and leaves the room...";
                 return reaction;

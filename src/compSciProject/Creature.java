@@ -69,6 +69,9 @@ public abstract class Creature {
     }
     abstract String react();
 
+    /**
+     * Reaction to fellow creature leaving room
+     */
     protected String snitch(){
         String leavingReaction = "\n" ;
         for(Creature c: getRoom().getOccupants()){
