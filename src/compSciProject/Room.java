@@ -38,7 +38,7 @@ public class Room {
     }
 
     /**
-     * Add neighbor to Room using a growable array.
+     * Add neighbor to Room using a variable length array.
      */
     public void addNeighbor(Room roomNew, String posit) {
         if (doorCount == 0) {
@@ -53,7 +53,6 @@ public class Room {
         newDoors[size - 1] = new Door(roomNew, posit);
         this.doors = newDoors;
     }
-
     /**
      * Remove creature algorithm looks through the
      * array and pops out the animal that is being removed

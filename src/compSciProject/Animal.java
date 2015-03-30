@@ -1,8 +1,11 @@
 package compSciProject;
 
 public class Animal extends Creature {
+    public static final String positiveReaction = " licks the face of ";
+
     public Animal(String name, String description, Room whereAt) {
         super(name, description, whereAt);
+        this.negativeReaction = " growls at ";
     }
 
     public int modifyRoom(Room peek){
@@ -18,20 +21,20 @@ public class Animal extends Creature {
     public String react() {
         String reaction = getName();
         if (!getRoom().getState().equals(Room.CLEAN)) {
-            reaction += " growls at " + getRoom().getPlayer().getName();
+            reaction += negativeReaction + getRoom().getPlayer().getName();
             getRoom().getPlayer().decRespect();
             if (getRoom().getState().equals(Room.DIRTY)) {
                 if(leaveRoom().equals(Creature.DEAD)) {
                     getRoom().removeCreature(this);
                     this.setRoom(new Room("Roof"," Animal Heaven", Room.CLEAN));
-                    return reaction + " and exits through the roof";
+                    return reaction + Creature.DEATH;
                 }
                 reaction += " and leaves the room...";
                 return reaction;
             }
         }
         else{
-            reaction += " licks the face of " + getRoom().getPlayer().getName();
+            reaction += positiveReaction + getRoom().getPlayer().getName();
             getRoom().getPlayer().addRespect();
         }
 

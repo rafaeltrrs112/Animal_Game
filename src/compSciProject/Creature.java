@@ -4,7 +4,10 @@ public abstract class Creature {
     private String name;
     private String description;
     private Room currRoom;
+    protected String negativeReaction;
     static final String DEAD = "DEAD";
+    static final String DEATH = " and exits through the roof";
+
 
     public Creature(String name, String description, Room currRoom) {
         this.name = name;
@@ -53,7 +56,6 @@ public abstract class Creature {
             getRoom().removeCreature(this);
             r.addCreature(this);
             return getName() + " had to change the room state ";
-
         }
         return getName() + " was unable to leave the room and crawled out through" +
                 " the ceiling";
@@ -62,12 +64,25 @@ public abstract class Creature {
         getRoom().iGameStateChange(forceTask);
         return react();
     }
-
     int modifyRoom(Room peek){
         return peek.getState().equals(Room.HALF_DIRTY) ? 0 : -1;
     }
     abstract String react();
 
+    protected String snitch(){
+        String leavingReaction = "\n" ;
+        for(Creature c: getRoom().getOccupants()){
+            if(!c.getName().equals(this.getName())) {
+                leavingReaction += c.reactToDeath(this);
+            }
+        }
+        return leavingReaction;
+    }
+    public String reactToDeath(Creature deadCreature){
+        getRoom().getPlayer().decRespect();
+        return this.getName() + negativeReaction + getRoom().getPlayer().getName()
+                              + " for chasing away " + deadCreature.getName() + "\n";
+    }
 
     public String toString() {
         return name + ": " + description;
