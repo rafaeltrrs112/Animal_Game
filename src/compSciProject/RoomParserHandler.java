@@ -1,7 +1,5 @@
-package compSciProject; /**
- * Created by Rtorres on 3/8/2015.
- *
- */
+package compSciProject;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -54,7 +52,6 @@ class RoomParserHandler extends DefaultHandler {
                 Room testRoom = new Room(roomFieldMap.get("name"), roomFieldMap.get("description"), roomFieldMap.get("state"));
                 currentRoom = testRoom;
                 roomMap.put(testRoom.getName(), testRoom);
-
                 for (String x : roomPositions) {
                     if (roomFieldMap.containsKey(x)) {
                         currentRoomPosit.addRoomPosits(currentRoom.getName(), x, roomFieldMap.get(x));

@@ -91,6 +91,11 @@ public class Driver {
         // set selected filter
         chooser.showOpenDialog(null);
         chooser.setFileFilter(XMLFILTER);
+        if (chooser.getSelectedFile() == null){
+            System.out.println("No File Save Chosen!\n" +
+                               "Exiting Now");
+            System.exit(0);
+        }
         return chooser.getSelectedFile();
     }
     /*
@@ -100,24 +105,12 @@ public class Driver {
      */
     public void runGame() {
         RoomParserHandler.run(fileChooserGUI());
-        Room[] rooms;
-        rooms = RoomParserHandler.currentRoomPosit.getRooms();
         player = RoomParserHandler.currentPlayer;
-        //System.out.println("Player is " + player.getName());
-        //for (Room x : rooms) {
-        //    System.out.println(x);
-        //}
-
-        /*
-         * Current version of switch statement runs on an integer case, may be
-         * modified later to take in a string. Though an integer is less confusing for debugging
-         * right now.
-         */
         System.out.println(introBanner() + "\n" + mainMenuMessage());
         while (!userChoice.equals("exit") && playerGameStatus()==0) {
             System.out.println(displayStatus());
             userChoice = compSciProject.gameTools.InputVerifier.getStringInput();
-            //In Room commands
+
             String []choiceInit = userChoice.split(":");
             if(choiceInit.length == 1) {
                 if(InputVerifier.isPosit(choiceInit[0])){
@@ -306,6 +299,5 @@ public class Driver {
     public static void main(String[] args) {
         Driver runGame = new Driver();
         runGame.runGame();
-
     }
 }
