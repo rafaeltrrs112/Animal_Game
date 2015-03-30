@@ -18,7 +18,6 @@ public class Animal extends Creature {
         }
         return 0;
     }
-    //
     public String react() {
         String reaction = getName();
         if (!getRoom().getState().equals(Room.CLEAN)) {
