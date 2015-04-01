@@ -180,14 +180,19 @@ public class Driver {
             }
         }
         if(playerGameStatus()!=0){
-            System.out.println("\t\t\t\t\tGame Over You Lose\n" + gameOverBanner());
+            if(playerGameStatus()==-1) {
+                System.out.println("\t\t\t\t\tGame Over You Lose\n" + gameOverBanner());
+            }
+            if(playerGameStatus()==1) {
+                System.out.println("\n\t\t\t\tCongratulations You Have Won!\n" + gameWonBanner());
+            }
         }
     }
 
     public int playerGameStatus(){
-        if(player.getRespect()<0)
+        if(player.getRespect()<=0)
             return -1;
-        if(player.getRespect()==80)
+        if(player.getRespect()>=80)
             return 1;
         return 0;
     }
@@ -295,7 +300,21 @@ public class Driver {
                         "      ;                            ;;+_  :::. :..;;;\n" +
                         "                                   ;;;;;;,;;;;;;;;,;";
     }
-
+    public String gameWonBanner(){
+        return ("                                 .''.\n" +
+                "       .''.             *''*    :_\\/_:     .\n" +
+                "      :_\\/_:   .    .:.*_\\/_*   : /\\ :  .'.:.'.\n" +
+                "  .''.: /\\ : _\\(/_  ':'* /\\ *  : '..'.  -=:o:=-\n" +
+                " :_\\/_:'.:::. /)\\*''*  .|.* '.\\'/.'_\\(/_'.':'.'\n" +
+                " : /\\ : :::::  '*_\\/_* | |  -= o =- /)\\    '  *\n" +
+                "  '..'  ':::'   * /\\ * |'|  .'/.\\'.  '._____\n" +
+                "      *        __*..* |  |     :      |.   |' .---\"|\n" +
+                "       _*   .-'   '-. |  |     .--'|  ||   | _|    |\n" +
+                "    .-'|  _.|  |    ||   '-__  |   |  |    ||      |\n" +
+                "    |' | |.    |    ||       | |   |  |    ||      |\n" +
+                " ___|  '-'     '    \"\"       '-'   '-.'    '`      |____\n" +
+                "jgs~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    }
     public static void main(String[] args) {
         Driver runGame = new Driver();
         runGame.runGame();
