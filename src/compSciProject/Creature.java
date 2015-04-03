@@ -1,6 +1,8 @@
 package compSciProject;
 
-public abstract class Creature {
+import java.util.Comparator;
+
+public abstract class Creature{
     private String name;
     private String description;
     private Room currRoom;

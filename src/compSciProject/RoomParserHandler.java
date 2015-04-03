@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.util.*;
 import java.io.File;
 
-class RoomParserHandler extends DefaultHandler {
+public class RoomParserHandler extends DefaultHandler {
     static Room currentRoom;
     static HashMap<String, String> roomFieldMap = new HashMap<>();
     static HashMap<String, String> creatureFieldMap = new HashMap<>();
     static HashMap<String, Room> roomMap = new HashMap<>();
     static String[] roomPositions = {Door.NORTH, Door.SOUTH, Door.EAST, Door.WEST};
     static roomHolder currentRoomPosit = new roomHolder();
-    static PC currentPlayer;
+    static public PC currentPlayer;
 
 
     public static void run(File inputFile){

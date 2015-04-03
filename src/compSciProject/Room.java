@@ -1,7 +1,6 @@
 package compSciProject;
 
 import compSciProject.gameTools.elemRandom;
-import java.util.Arrays;
 import static java.lang.System.arraycopy;
 /**
  * Room class holds up to ten occupants including the player!
@@ -24,9 +23,8 @@ public class Room {
     private  String name;
     private  String description;
     private String state;
-    private int population = 0;
+    private LinkedList Creatures = new LinkedList();
     private int doorCount = 0;
-    private Creature[] occupants = new Creature[10];
     private Door[] doors = new Door[1];
     private PC player;
 
@@ -54,6 +52,14 @@ public class Room {
         this.doors = newDoors;
     }
     /**
+     * Add creature is a fail soft array implementation. I am currently
+     * thinking of just making a separate fail soft array class and using
+     * that instead of having a while entire method here.
+     */
+    public void addCreature(Creature creature) {
+        Creatures.add(creature);
+    }
+    /**
      * Remove creature algorithm looks through the
      * array and pops out the animal that is being removed
      * Algorithm: Save index of animal that needs to be removed.
@@ -63,24 +69,7 @@ public class Room {
      * index of animal being removed.
      */
     public void removeCreature(Creature animal) {
-        if (population > 1) {
-            population--;
-        } else if (population == 1) {
-            occupants[0] = null;
-            population = 0;
-            return;
-        }
-        int remIndex = 0;
-        for (int i = 0; i < population + 1; i++) {
-            if (occupants[i] == null) {
-                return;
-            } else if (occupants[i].getName().equals(animal.getName())) {
-                remIndex = i;
-                break;
-            }
-        }
-        occupants[remIndex] = occupants[population];
-        occupants[population] = null;
+        Creatures.removeCreature(animal.getName());
     }
     public void removeCreature(PC pc){
         player = null;
@@ -93,11 +82,11 @@ public class Room {
      * They are also used
      */
     public boolean isFull() {
-        return (population == 10);
+        return (getPopulation() == 10);
     }
 
     public boolean isEmpty() {
-        return (population == 0);
+        return (Creatures.length()==0);
     }
 
     /**
@@ -116,19 +105,6 @@ public class Room {
             this.state = Room.HALF_DIRTY;
             return state;
         }
-    }
-    /**
-     * Add creature is a fail soft array implementation. I am currently
-     * thinking of just making a separate fail soft array class and using
-     * that instead of having a while entire method here.
-     */
-    public void addCreature(Creature creature) {
-        if (isFull()) {
-            return;
-        }
-        occupants[population] = creature;
-        population++;
-        creature.setRoom(this);
     }
 
     public String getName() {
@@ -166,14 +142,14 @@ public class Room {
      * Get occupants returns a specific array that will not contain
      * any null space! This allows for clean enhanced loops.
      */
-    public Creature[] getOccupants() {
-        return Arrays.copyOfRange(occupants, 0, population);
+    public LinkedList getOccupants() {
+        return Creatures;
     }
-    public String forceInhabitant(int indexOf, String action){
-        return occupants[indexOf].react(action);
+    public String forceInhabitant(String name, String action){
+        return Creatures.getCreature(name).react(action);
     }
     public int getPopulation(){
-        return player!=null ? population+1 : population;
+        return player!=null ? getOccupants().length()+1 : getOccupants().length();
     }
 
     //Print out all doors to user. Return a error message if there are none.
@@ -185,8 +161,8 @@ public class Room {
         if(player!=null){
             roster += player.toString() + "\n";
         }
-        for (int i = 0; i < population; i++)
-            roster += occupants[i].toString() + "\n";
+        for (Creature c: Creatures)
+            roster += c + "\n";
         return roster;
     }
     /**
@@ -214,20 +190,20 @@ public class Room {
     /**
      * Sort and search algorithms for later part of assignment
      */
-    public void sort(){
-        quickSortSelf.sortArray(occupants, population);
-    }
-    public int search(String key){
-        binarySearch searcher = new binarySearch();
-        return searcher.startSearch(occupants,key,population);
-    }
+    //public void sort(){
+    //  quickSortSelf.sortArray(occupants, population);
+    //}
+    //public int search(String key){
+       // binarySearch searcher = new binarySearch();
+        //return searcher.startSearch(occupants,key,population);
+    //}
 
     /**
      * To string made here. Implicitly calls all
      * toStrings of other classes contained in the program.
      */
     public String toString() {
-        if (population > 0 || player!=null)
+        if (Creatures.length() > 0 || player!=null)
             return "Room name: " + name + "\nDoors:" + "[" + doorCount + "]\n" + "Description : " + description + "\nOccupants" + "[" + getPopulation() + "]...\n"
                     + displayOccupants() + displayDoors();
         else {
