@@ -1,86 +1,44 @@
 package compSciProject;
 import java.util.*;
 
-/**Cargo is the value of the current node
- * next is a linked node to this one.
- *
- * NOTE: Making linked nodes allows you to assemble multiple objects into
- * a single entity, or a **Collection**.
- *
- * 1st NODE: The first Node of the List serves as a reference to the entire list.
- *
- */
-class testEquals{
-    String name;
-
-    testEquals(String name){
-        this.name = name;
-    }
-
-    public boolean equals(Object obj){
-        if(obj == null){
-            return false;
-        }
-        else{
-            return (this.name.equals(obj));
-        }
-    }
-}
-class Node<T>{
-    T data;
-    Node<T> next;
-    Node<T> prev;
-
-    public Node(T objectData){
-        data = objectData;
-        next = null;
-    }
-
-    public Node(T objectData, Node next){
-        this.data = objectData;
-        this.next = next;
-    }
-    public static String printList(Node list){
-        String printedList ="";
-        Node node= list;
-        while(node != null){
-            printedList += node;
-            if(node.next!=null) printedList += ",";
-            node = node.next;
-        }
-        return printedList;
-    }
-
-    public T getData() {
-        return data;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    public Node getNext() {
-        return next;
-    }
-
-    public void setNext(Node next) {
-        this.next = next;
-        next.prev = this;
-    }
-
-    public String toString(){
-        return data.toString();
-    }
-
-}
 public class LinkedList<T> implements Iterable<T> {
-    //Tail is the last node in the list
-    //Head is the first node in the list
+
+    class Node<T>{
+        T data;
+        Node<T> next;
+        Node<T> prev;
+
+        public Node(T objectData){
+            data = objectData;
+            next = null;
+        }
+
+        public Node(T objectData, Node next){
+            this.data = objectData;
+            this.next = next;
+        }
+
+        public T getData() {
+            return data;
+        }
+
+        public Node getNext() {
+            return next;
+        }
+
+        public void setNext(Node next) {
+            this.next = next;
+            next.prev = this;
+        }
+
+        public String toString(){
+            return data.toString();
+        }
+    }
+
     private int length;
     Node<T> head;
     Node<T> tail;
-    private int count = 0;
-    Node nextNode;
 
 
     public LinkedList() {
@@ -113,16 +71,6 @@ public class LinkedList<T> implements Iterable<T> {
             node = node.next;
         }
         return null;
-    }
-
-    public String printList() {
-        String printedList = Node.printList(head);
-        String[] printedListFormatted = printedList.split(",");
-        String printOut = "";
-        for (String states : printedListFormatted) {
-            printOut += printOut;
-        }
-        return printedList;
     }
 
     public boolean remove(String removeObject) {
@@ -197,34 +145,7 @@ public class LinkedList<T> implements Iterable<T> {
             throw new UnsupportedOperationException();
         }
     }
-    public static void main(String[] args) {
-        System.out.println("hello");
-        String[] testStrings = {"a","c","d","e","f"};
-        LinkedList<String> stringList = new LinkedList<>();
-        for (String testString : testStrings) {
-            stringList.add(testString);
-        }
-        System.out.println(stringList.length);
-        System.out.println(stringList.contains("a"));
-        System.out.println(stringList.contains("b"));
-        System.out.println(stringList.contains("R"));
-        stringList.forEach(System.out::println);
-        System.out.println("Remove d and f");
-        stringList.remove("f");
-        stringList.remove("d");
-        stringList.forEach(System.out::println);
-        stringList.add("q");
-        System.out.println("add Q to the end");
-        stringList.forEach(System.out::println);
-        System.out.println(stringList.head.toString() + stringList.tail.toString());
-        System.out.println(Node.printList(stringList.head));
-        stringList.add("LKJ");
-        stringList.add("LDKFJ");
-        stringList.forEach(System.out::println);
-        stringList.remove("c");
-        stringList.forEach(System.out::println);
-        stringList.add("i");
-        stringList.forEach(System.out::println);
-    }
 
+    public static void main(String[] args) {
+    }
 }
