@@ -8,7 +8,7 @@ public class PC extends Creature {
     }
 
     public String leaveRoom() {
-        getRoom().removeCreature(this);
+        getRoom().remove(this);
         return "Leaving !";
     }
 

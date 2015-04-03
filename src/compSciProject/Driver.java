@@ -45,11 +45,11 @@ public class Driver {
      * the room they are being kicked too if they don't like it!
      */
     public void creatureForceMove(String name, String doorChoice) {
-        LinkedList occupants = player.getRoom().getOccupants();
+        LinkedList<Creature> occupants = player.getRoom().getOccupants();
         Door doors[] = player.getRoom().userGetDoors();
 
         int doorChoiceIndex = (player.getRoom().getDoorIndex(doorChoice));
-        if(player.getRoom().getOccupants().containsCreature(name)){
+        if(player.getRoom().getOccupants().contains(name)){
             System.out.println("Invalid command!");
             return;
         }
@@ -57,7 +57,7 @@ public class Driver {
             System.out.println("Room Full Cannot Kick!");
             return;
         }
-        occupants.getCreature(name).leaveRoom(doors[doorChoiceIndex].getLeadTo());
+        occupants.get(name).leaveRoom(doors[doorChoiceIndex].getLeadTo());
     }
     /*
      * Here they player can change the state of the room they are in.
@@ -144,7 +144,7 @@ public class Driver {
             }
             if(choiceInit.length == 2){
                 //player.getRoom().sort();
-                if(player.getRoom().getOccupants().containsCreature(choiceInit[0])){
+                if(player.getRoom().getOccupants().contains(choiceInit[0])){
                     switch(choiceInit[1]){
                         case "clean":{
                             System.out.println(player.getRoom().forceInhabitant(choiceInit[0], Room.CLEAN));

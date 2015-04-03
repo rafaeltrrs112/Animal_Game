@@ -23,7 +23,7 @@ public class Room {
     private  String name;
     private  String description;
     private String state;
-    private LinkedList Creatures = new LinkedList();
+    private LinkedList<Creature> Creatures = new LinkedList<>();
     private int doorCount = 0;
     private Door[] doors = new Door[1];
     private PC player;
@@ -68,10 +68,10 @@ public class Room {
      * And place last animal in population into
      * index of animal being removed.
      */
-    public void removeCreature(Creature animal) {
-        Creatures.removeCreature(animal.getName());
+    public void remove(Creature animal) {
+        Creatures.remove(animal.getName());
     }
-    public void removeCreature(PC pc){
+    public void remove(PC pc){
         player = null;
     }
     /**
@@ -142,11 +142,11 @@ public class Room {
      * Get occupants returns a specific array that will not contain
      * any null space! This allows for clean enhanced loops.
      */
-    public LinkedList getOccupants() {
+    public LinkedList<Creature> getOccupants() {
         return Creatures;
     }
     public String forceInhabitant(String name, String action){
-        return Creatures.getCreature(name).react(action);
+        return Creatures.get(name).react(action);
     }
     public int getPopulation(){
         return player!=null ? getOccupants().length()+1 : getOccupants().length();
@@ -211,5 +211,4 @@ public class Room {
                     displayDoors();
         }
     }
-
 }

@@ -26,7 +26,7 @@ public class Animal extends Creature {
             if (getRoom().getState().equals(Room.DIRTY)) {
                 if(leaveRoom().equals(Creature.DEAD)) {
                     String creatureReactions = snitch();
-                    getRoom().removeCreature(this);
+                    getRoom().remove(this);
                     this.setRoom(new Room("Roof"," Animal Heaven", Room.CLEAN));
                     return reaction + Creature.DEATH + creatureReactions;
                 }

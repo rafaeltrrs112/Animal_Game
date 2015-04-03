@@ -1,10 +1,9 @@
 <xml version="1.0" encoding="UTF-8">
 <room name="Violet" description="a large round room with violet draperies" state="half-dirty" north="Pig" east="Student" south="Teacher" west="Green">
-	<animal name="Peter" description="a brown dog"/>
+    <PC name="Squash" description="one who doesn't leave the animals and NPC-s alone"/>
+    <animal name="Peter" description="a brown dog"/>
 	<animal name="Lily" description="a black and white cat"/>
-	<NPC name="Mary" description="a tall woman"/>
-	<PC name="Squash" description="one who doesn't leave the animals and NPC-s alone"/>
-</room>
+	<NPC name="Mary" description="a tall woman"/></room>
 <room name="Pig" description="this one used to be a pigsty, now a guestroom" state="clean" north="Roofless" south="Violet" west="Windy">
 	<animal name="Lucy" description="a pink pig"/>
 	<animal name="Mutsu" description="a black-spotted pig"/>

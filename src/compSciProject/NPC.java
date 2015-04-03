@@ -26,11 +26,11 @@ public class NPC extends Creature {
             if (getRoom().getState().equals(Room.CLEAN)) {
                 if(leaveRoom().equals(Creature.DEAD)){
                     String creatureReactions = snitch();
-                    getRoom().removeCreature(this);
+                    getRoom().remove(this);
                     this.setRoom(new Room("Roof", " NPC Heaven", Room.DIRTY));
                     return reaction + Creature.DEATH + creatureReactions;
                 }
-                reaction += Creature.DEATH;
+                reaction += " and leaves the room";
                 return reaction;
             }
         }

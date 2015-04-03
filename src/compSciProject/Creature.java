@@ -1,7 +1,5 @@
 package compSciProject;
 
-import java.util.Comparator;
-
 public abstract class Creature{
     private String name;
     private String description;
@@ -32,7 +30,7 @@ public abstract class Creature{
         for (Door x : getRoom().getDoors()) {
             Room r = x.getLeadTo();
             if (!r.isFull()) {
-                getRoom().removeCreature(this);
+                getRoom().remove(this);
                 if (modifyRoom(r)!=-1) {
                     r.addCreature(this);
                     return "CREATURE EXITING";
@@ -49,13 +47,13 @@ public abstract class Creature{
 
     public String leaveRoom(Room r){
         if (modifyRoom(r)!=-1) {
-            getRoom().removeCreature(this);
+            getRoom().remove(this);
             r.addCreature(this);
             return getName() + " content with room ";
         }
         else if(modifyRoom(r) == 0) {
             r.setState(Room.HALF_DIRTY);
-            getRoom().removeCreature(this);
+            getRoom().remove(this);
             r.addCreature(this);
             return getName() + " had to change the room state ";
         }
@@ -87,6 +85,11 @@ public abstract class Creature{
         getRoom().getPlayer().decRespect();
         return this.getName() + negativeReaction + getRoom().getPlayer().getName()
                               + " for chasing away " + deadCreature.getName() + "\n";
+    }
+
+
+    public boolean equals(Object compareObject) {
+        return compareObject != null && (this.getName().equals(compareObject));
     }
 
     public String toString() {

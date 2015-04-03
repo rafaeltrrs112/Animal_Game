@@ -1,5 +1,4 @@
 package compSciProject;
-
 import java.util.*;
 
 /**Cargo is the value of the current node
@@ -11,17 +10,33 @@ import java.util.*;
  * 1st NODE: The first Node of the List serves as a reference to the entire list.
  *
  */
-class Node{
-    Object data;
-    Node next;
-    Node prev;
+class testEquals{
+    String name;
 
-    public Node(Object objectData){
+    testEquals(String name){
+        this.name = name;
+    }
+
+    public boolean equals(Object obj){
+        if(obj == null){
+            return false;
+        }
+        else{
+            return (this.name.equals(obj));
+        }
+    }
+}
+class Node<T>{
+    T data;
+    Node<T> next;
+    Node<T> prev;
+
+    public Node(T objectData){
         data = objectData;
         next = null;
     }
 
-    public Node(Objects objectData, Node next){
+    public Node(T objectData, Node next){
         this.data = objectData;
         this.next = next;
     }
@@ -36,11 +51,11 @@ class Node{
         return printedList;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
@@ -58,25 +73,25 @@ class Node{
     }
 
 }
-public class LinkedList implements Iterable<Creature>{
+public class LinkedList<T> implements Iterable<T> {
     //Tail is the last node in the list
     //Head is the first node in the list
     private int length;
-    Node head;
-    Node tail;
+    Node<T> head;
+    Node<T> tail;
     private int count = 0;
     Node nextNode;
 
 
-    public LinkedList(){
+    public LinkedList() {
         length = 0;
         head = null;
     }
 
     //If head is equal to tail then list is a singleton
-    public void add(Creature objectData){
-        Node addToList = new Node(objectData);
-        if (head == null){
+    public void add(T objectData) {
+        Node<T> addToList = new Node<>(objectData);
+        if (head == null) {
             head = addToList;
             length++;
             //Be careful this may cause SOF when trying to print
@@ -87,76 +102,51 @@ public class LinkedList implements Iterable<Creature>{
         tail = addToList;
         length++;
     }
-    /**
-     * Try making it generic so you don't have to create a method for
-     * every different type of possible object.
-     * */
-    public void add(Object object){
-        Node addToList = new Node(object);
-        if (head == null){
-            head = addToList;
-            length++;
-            //Be careful this may cause SOF when trying to print
-            tail = head;
-            return;
-        }
-        tail.setNext(addToList);
-        tail = addToList;
-        length++;
-    }
-    public Creature getCreature(String name){
-        Node node = head;
-        while(node!=null){
-            Creature currentCreature = (Creature)node.getData();
-            if (currentCreature.getName().equals(name)) return currentCreature;
-            node = node.getNext();
-        }
-        return null;
-    }
-    public Object getString(String findString){
-        Node node = head;
-        while(node!=null){
-            String currentString = (String)node.getData();
-            if(currentString.equals(findString)) return currentString;
-            node = node.getNext();
+    public T get(String getObject){
+        Node<T> node= head;
+        while(node != null){
+            if(node.next!=null){
+                if(node.getData().equals(getObject)){
+                    return node.getData();
+                }
+            }
+            node = node.next;
         }
         return null;
     }
 
-    public String printList(){
+    public String printList() {
         String printedList = Node.printList(head);
         String[] printedListFormatted = printedList.split(",");
         String printOut = "";
-        for (String states:printedListFormatted){
+        for (String states : printedListFormatted) {
             printOut += printOut;
         }
         return printedList;
     }
 
-    public boolean removeCreature(String name){
-        if(!containsCreature(name)){
+    public boolean remove(String removeObject) {
+        if (!contains(removeObject)) {
             return false;
-        }
-        else{
+        } else {
             length--;
-            Node current = head;
-            while(current!=null){
-                Creature currentCreature = (Creature)current.getData();
-                if (currentCreature.getName().equals(name)){
-                    if(current.prev!=null){
+            Node<T> current = head;
+            while (current != null) {
+                T currentValue = current.getData();
+                if (currentValue.equals(removeObject)) {
+                    if (current.prev != null) {
                         current.prev.next = current.next;
-                        if(current.next!=null){
+                        if (current.next != null) {
                             current.next.prev = current.prev;
+                        }else{
+                            tail=tail.prev;
                         }
                     } else {
                         head = current.next;
-                        if(current.next!=null){
+                        if (current.next != null) {
                             current.next.prev = null;
                         }
                     }
-
-                    //current.prev = current.next;
-
                     return true;
                 } else {
                     current = current.next;
@@ -167,67 +157,73 @@ public class LinkedList implements Iterable<Creature>{
         return false;
     }
 
-    public boolean containsCreature(String name){
-        Node node = head;
-        while(node!=null){
-            Creature currentCreature = (Creature)node.getData();
-            if (currentCreature.getName().equals(name)) return true;
+    public boolean contains(String check){
+        Node<T> node = head;
+        while (node != null) {
+            T currentValue = node.getData();
+            if (currentValue.equals(check)) return true;
             node = node.getNext();
         }
         return false;
     }
-    //Length
-    public int length(){
+
+    public int length() {
         return length;
     }
 
-    public Iterator<Creature> iterator()
-    {
+    public Iterator<T> iterator() {
         return new LinkedListIterator();
     }
-    private class LinkedListIterator  implements Iterator<Creature>
-    {
-        private Node nextNode;
 
-        public LinkedListIterator()
-        {
+    private class LinkedListIterator implements Iterator<T> {
+        private Node<T> nextNode;
+
+        public LinkedListIterator() {
             nextNode = head;
         }
 
-        public boolean hasNext()
-        {
+        public boolean hasNext() {
             return nextNode != null;
         }
 
-        public Creature next()
-        {
+        public T next() {
             if (!hasNext()) throw new NoSuchElementException();
-            Creature res = (Creature)nextNode.data;
+            T res = nextNode.data;
             nextNode = nextNode.next;
             return res;
         }
 
-        public void remove() { throw new UnsupportedOperationException(); }
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
-
     public static void main(String[] args) {
         System.out.println("hello");
         String[] testStrings = {"a","c","d","e","f"};
-        LinkedList list = new LinkedList();
-        //RoomParserHandler.run(Driver.fileChooserGUI());
-        PC player = RoomParserHandler.currentPlayer;
-        Room testRoom = new Room("null","null","null");
-        Creature test = new Animal("nulla","nulla",testRoom);
-        list.add(test);
-        list.add(test);
-        System.out.println(list.length);
-        String hello;
-        list.forEach(System.out::println);
-        LinkedList stringList = new LinkedList();
-        System.out.println("String list length: " + stringList.length());
-        for(String s:testStrings){
-            stringList.add(s);
+        LinkedList<String> stringList = new LinkedList<>();
+        for (String testString : testStrings) {
+            stringList.add(testString);
         }
+        System.out.println(stringList.length);
+        System.out.println(stringList.contains("a"));
+        System.out.println(stringList.contains("b"));
+        System.out.println(stringList.contains("R"));
+        stringList.forEach(System.out::println);
+        System.out.println("Remove d and f");
+        stringList.remove("f");
+        stringList.remove("d");
+        stringList.forEach(System.out::println);
+        stringList.add("q");
+        System.out.println("add Q to the end");
+        stringList.forEach(System.out::println);
+        System.out.println(stringList.head.toString() + stringList.tail.toString());
+        System.out.println(Node.printList(stringList.head));
+        stringList.add("LKJ");
+        stringList.add("LDKFJ");
+        stringList.forEach(System.out::println);
+        stringList.remove("c");
+        stringList.forEach(System.out::println);
+        stringList.add("i");
         stringList.forEach(System.out::println);
     }
 
