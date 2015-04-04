@@ -177,6 +177,7 @@ public class Driver {
                 }
             }
         }
+        //Check for the game status after player's actions take effect.
         if(playerGameStatus()!=0){
             if(playerGameStatus()==-1) {
                 System.out.println("\t\t\t\t\tGame Over You Lose\n" + gameOverBanner());

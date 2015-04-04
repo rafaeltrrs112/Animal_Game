@@ -4,11 +4,6 @@ package compSciProject;
 import java.util.HashMap;
 import java.util.*;
 
-/**
- *
- * Created by Rtorres on 3/9/2015.
- *
- */
 public class roomHolder {
     //roomMap is for getting the position.
     public HashMap<String, HashMap<String, String>> roomMap = new HashMap<>();

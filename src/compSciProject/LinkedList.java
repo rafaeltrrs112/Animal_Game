@@ -37,13 +37,21 @@ public class LinkedList<T> implements Iterable<T> {
     }
 
     private int length;
-    Node<T> head;
-    Node<T> tail;
+    private Node<T> head;
+    private Node<T> tail;
 
 
     public LinkedList() {
         length = 0;
         head = null;
+    }
+    @SafeVarargs
+    public LinkedList(T ... E){
+        length = E.length;
+        head = null;
+        for(T element : E){
+            add(element);
+        }
     }
 
     //If head is equal to tail then list is a singleton

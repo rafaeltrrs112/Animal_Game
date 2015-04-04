@@ -15,7 +15,7 @@ public class RoomParserHandler extends DefaultHandler {
     static HashMap<String, String> roomFieldMap = new HashMap<>();
     static HashMap<String, String> creatureFieldMap = new HashMap<>();
     static HashMap<String, Room> roomMap = new HashMap<>();
-    static String[] roomPositions = {Door.NORTH, Door.SOUTH, Door.EAST, Door.WEST};
+    static LinkedList<String> roomPositions = new LinkedList<>(Door.positions);
     static roomHolder currentRoomPosit = new roomHolder();
     static public PC currentPlayer;
 
