@@ -152,11 +152,5 @@ public class LinkedList<T> implements Iterable<T> {
     }
 
     public static void main(String[] args) {
-        RoomParserHandler.run(Driver.fileChooserGUI());
-        PC testPc = RoomParserHandler.currentPlayer;
-        testPc.getRoom().getOccupants().forEach(System.out::println);
-        LinkedList<Creature> testList = testPc.getRoom().getOccupants();
-        System.out.println(testList.contains("Mary"));
-        System.out.println(testList.get("Mary"));
     }
 }
