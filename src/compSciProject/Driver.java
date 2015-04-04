@@ -47,9 +47,10 @@ public class Driver {
     public void creatureForceMove(String name, String doorChoice) {
         LinkedList<Creature> occupants = player.getRoom().getOccupants();
         Door doors[] = player.getRoom().userGetDoors();
-
+        System.out.println(occupants.get(name));
+        //TODO get door index us unnecessary make this piece of code better.
         int doorChoiceIndex = (player.getRoom().getDoorIndex(doorChoice));
-        if(player.getRoom().getOccupants().contains(name)){
+        if(!player.getRoom().getOccupants().contains(name)){
             System.out.println("Invalid command!");
             return;
         }
@@ -57,6 +58,9 @@ public class Driver {
             System.out.println("Room Full Cannot Kick!");
             return;
         }
+        System.out.println("Past loops");
+        System.out.println("Occupant to move: " + occupants.get(name));
+        System.out.println("Room sending to: " + doors[doorChoiceIndex].getLeadTo().getName());
         occupants.get(name).leaveRoom(doors[doorChoiceIndex].getLeadTo());
     }
     /*
@@ -162,6 +166,9 @@ public class Driver {
                             wait.nextLine();
                             break;
                         }
+                        /**
+                         * TODO : BUG that does not allow the player to kick the animal to a room.
+                         */
                         default : {
                             if (player.getRoom().isEmpty()) {
                                 System.out.println("\nRoom is Empty No One to Kick Out\n");

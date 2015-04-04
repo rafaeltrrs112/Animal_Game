@@ -7,7 +7,7 @@ import static java.lang.System.arraycopy;
  * Two arrays are made, one holds the NPCs the other holds the Animals
  * Current version: holds all animals in one array
  *
- * Clean out print statements after Driver proves that all mehods
+ * Clean out print statements after Driver proves that all methods
  * work properly.
  *
  */
@@ -146,6 +146,7 @@ public class Room {
         return Creatures;
     }
     public String forceInhabitant(String name, String action){
+        System.out.println(Creatures.get(name));
         return Creatures.get(name).react(action);
     }
     public int getPopulation(){

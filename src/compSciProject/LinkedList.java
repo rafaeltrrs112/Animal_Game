@@ -68,15 +68,12 @@ public class LinkedList<T> implements Iterable<T> {
         tail = addToList;
         length++;
     }
-    public T get(String getObject){
-        Node<T> node= head;
-        while(node != null){
-            if(node.next!=null){
-                if(node.getData().equals(getObject)){
-                    return node.getData();
-                }
-            }
-            node = node.next;
+    public T get(String check){
+        Node<T> node = head;
+        while (node != null) {
+            T currentValue = node.getData();
+            if (currentValue.equals(check)) return currentValue;
+            node = node.getNext();
         }
         return null;
     }
@@ -155,5 +152,11 @@ public class LinkedList<T> implements Iterable<T> {
     }
 
     public static void main(String[] args) {
+        RoomParserHandler.run(Driver.fileChooserGUI());
+        PC testPc = RoomParserHandler.currentPlayer;
+        testPc.getRoom().getOccupants().forEach(System.out::println);
+        LinkedList<Creature> testList = testPc.getRoom().getOccupants();
+        System.out.println(testList.contains("Mary"));
+        System.out.println(testList.get("Mary"));
     }
 }

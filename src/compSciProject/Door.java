@@ -24,7 +24,15 @@ public class Door {
     public String getPosition(){
         return position;
     }
-
+    public boolean equals(Object compareObject) {
+        if(compareObject == null){
+            return false;
+        }
+        else{
+            if(getPosition().equals(compareObject.toString())) return true;
+        }
+        return false;
+    }
     public String toString() {
         if (position == null)
             return null;

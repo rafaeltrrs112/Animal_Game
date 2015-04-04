@@ -46,12 +46,13 @@ public abstract class Creature{
     }
 
     public String leaveRoom(Room r){
+        System.out.println(r.getName());
         if (modifyRoom(r)!=-1) {
             getRoom().remove(this);
             r.addCreature(this);
             return getName() + " content with room ";
         }
-        else if(modifyRoom(r) == 0) {
+        else if(modifyRoom(r) == -1) {
             r.setState(Room.HALF_DIRTY);
             getRoom().remove(this);
             r.addCreature(this);
@@ -89,7 +90,13 @@ public abstract class Creature{
 
 
     public boolean equals(Object compareObject) {
-        return compareObject != null && (this.getName().equals(compareObject));
+        if(compareObject == null){
+            return false;
+        }
+        else{
+            if(getName().equals(compareObject.toString())) return true;
+        }
+        return false;
     }
 
     public String toString() {

@@ -11,11 +11,14 @@ public class NPC extends Creature {
     public int modifyRoom(Room peek) {
         String check = peek.getState();
         if (check.equals(Room.CLEAN)) {
+            //Negative means hated state
             return -1;
         }
         else if(check.equals(Room.DIRTY)){
+            //1 Means loved state
             return 1;
         }
+        //0 Means HALF-DIRTY or OK state
         return 0;
     }
     public String react(){
