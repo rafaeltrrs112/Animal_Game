@@ -1,32 +1,33 @@
 package compSciProject;
 import java.util.*;
 
+//Generic and iterable linked list.
 public class LinkedList<T> implements Iterable<T> {
+    //Inner class Node to be used during instance of Linked List only.
+    private class Node<T>{
+        private T data;
+        private Node<T> next;
+        private Node<T> prev;
 
-    class Node<T>{
-        T data;
-        Node<T> next;
-        Node<T> prev;
-
-        public Node(T objectData){
+        private Node(T objectData){
             data = objectData;
             next = null;
         }
 
-        public Node(T objectData, Node next){
+        private Node(T objectData, Node next){
             this.data = objectData;
             this.next = next;
         }
 
-        public T getData() {
+        private T getData() {
             return data;
         }
 
-        public Node getNext() {
+        private Node getNext() {
             return next;
         }
 
-        public void setNext(Node next) {
+        private void setNext(Node next) {
             this.next = next;
             next.prev = this;
         }
@@ -124,10 +125,12 @@ public class LinkedList<T> implements Iterable<T> {
         return length;
     }
 
+    //Iterator method for Linked List class returns the iterator nested class
     public Iterator<T> iterator() {
         return new LinkedListIterator();
     }
 
+    //Iterator implementation implements the Iterator interface
     private class LinkedListIterator implements Iterator<T> {
         private Node<T> nextNode;
 
@@ -151,6 +154,4 @@ public class LinkedList<T> implements Iterable<T> {
         }
     }
 
-    public static void main(String[] args) {
-    }
 }

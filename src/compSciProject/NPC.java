@@ -1,14 +1,15 @@
 package compSciProject;
 
 public class NPC extends Creature {
-    public static final String positiveReaction = " smiles at ";
+    protected String roomPreference = Room.CLEAN;
 
     public NPC(String name, String description, Room whereAt) {
         super(name, description, whereAt);
         this.negativeReaction = " grumbles at ";
+        this.positiveReaction = " smiles at ";
     }
 
-    public int modifyRoom(Room peek) {
+    public int checkRoom(Room peek) {
         String check = peek.getState();
         if (check.equals(Room.CLEAN)) {
             //Negative means hated state
@@ -26,11 +27,13 @@ public class NPC extends Creature {
         if (!getRoom().getState().equals(Room.DIRTY)) {
             reaction += negativeReaction + getRoom().getPlayer().getName();
             getRoom().getPlayer().decRespect();
+            System.out.println(getRoom().getState());
+            System.out.println(getName() + " in Room : " + getRoom().getName());
             if (getRoom().getState().equals(Room.CLEAN)) {
-                if(leaveRoom().equals(Creature.DEAD)){
+                String leaveRoom=leaveRoom();
+                System.out.println(leaveRoom);
+                if(leaveRoom.equals(Creature.DEAD)){
                     String creatureReactions = snitch();
-                    getRoom().remove(this);
-                    this.setRoom(new Room("Roof", " NPC Heaven", Room.DIRTY));
                     return reaction + Creature.DEATH + creatureReactions;
                 }
                 reaction += " and leaves the room";

@@ -8,20 +8,14 @@ public class roomHolder {
     //roomMap is for getting the position.
     public HashMap<String, HashMap<String, String>> roomMap = new HashMap<>();
     //This is the final list of rooms that have been added.
-    public ArrayList<Room> roomList = new ArrayList<>();
+    public LinkedList<Room> roomList = new LinkedList<>();
     public HashMap<String, Room> roomSourceMap = new HashMap<>();
     public String[] roomPositions = {Door.NORTH, Door.SOUTH, Door.EAST, Door.WEST};
 
 
     public roomHolder(){
     }
-    public Room[] getRooms() {
-        return roomList.toArray(new Room[roomList.size()]);
-    }
-    public void printFinishedRooms(){
-        roomList.forEach(System.out::println);
 
-    }
     public  void addRoomPosits(String roomName, String neighborPosition, String neighborName){
         //System.out.println(roomName + " door : " + neighborPosition + " leads to room: " + neighborName);
 

@@ -1,14 +1,15 @@
 package compSciProject;
 
 public class Animal extends Creature {
-    public static final String positiveReaction = " licks the face of ";
+    protected String roomPreference = Room.CLEAN;
 
     public Animal(String name, String description, Room whereAt) {
         super(name, description, whereAt);
         this.negativeReaction = " growls at ";
+        this.positiveReaction = " licks the face of ";
     }
 
-    public int modifyRoom(Room peek){
+    public int checkRoom(Room peek){
         String check = peek.getState();
         if (check.equals(Room.DIRTY)) {
             return -1;
@@ -24,10 +25,9 @@ public class Animal extends Creature {
             reaction += negativeReaction + getRoom().getPlayer().getName();
             getRoom().getPlayer().decRespect();
             if (getRoom().getState().equals(Room.DIRTY)) {
+                //Leaves the room call
                 if(leaveRoom().equals(Creature.DEAD)) {
                     String creatureReactions = snitch();
-                    getRoom().remove(this);
-                    this.setRoom(new Room("Roof"," Animal Heaven", Room.CLEAN));
                     return reaction + Creature.DEATH + creatureReactions;
                 }
                 reaction += " and leaves the room...";

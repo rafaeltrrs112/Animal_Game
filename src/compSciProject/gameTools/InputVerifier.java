@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class InputVerifier {
     static String[] commands = {"help","look","clean","dirty",
                                     "exit",Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST,"sort"};
-    static String[] positions = {Door.NORTH,Door.SOUTH,Door.EAST,Door.WEST};
+    static String[] positions = Door.positions;
 
         static String[] commandsOther;
 

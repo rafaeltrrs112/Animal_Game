@@ -5,8 +5,10 @@ public abstract class Creature{
     private String description;
     private Room currRoom;
     protected String negativeReaction;
+    protected String positiveReaction;
     static final String DEAD = "DEAD";
     static final String DEATH = " and exits through the roof";
+    protected String roomPreference;
 
 
     public Creature(String name, String description, Room currRoom) {
@@ -31,28 +33,32 @@ public abstract class Creature{
             Room r = x.getLeadTo();
             if (!r.isFull()) {
                 getRoom().remove(this);
-                if (modifyRoom(r)!=-1) {
+                if (checkRoom(r)!=-1) {
+                    //TODO ADDED
+                    getRoom().remove(this);
                     r.addCreature(this);
                     return "CREATURE EXITING";
                 }
-                else {
+                else if(checkRoom(r) == -1){
                     r.setState(Room.HALF_DIRTY);
+                    getRoom().remove(this);
                     r.addCreature(this);
                     return "CREATURE ENTERING/STATE CHANGE: HALF DIRTY";
                 }
             }
         }
+        getRoom().remove(this);
         return DEAD;
     }
 
     public String leaveRoom(Room r){
         System.out.println(r.getName());
-        if (modifyRoom(r)!=-1) {
+        if (checkRoom(r)!=-1) {
             getRoom().remove(this);
             r.addCreature(this);
             return getName() + " content with room ";
         }
-        else if(modifyRoom(r) == -1) {
+        else if(checkRoom(r) == -1) {
             r.setState(Room.HALF_DIRTY);
             getRoom().remove(this);
             r.addCreature(this);
@@ -65,7 +71,7 @@ public abstract class Creature{
         getRoom().iGameStateChange(forceTask);
         return react();
     }
-    int modifyRoom(Room peek){
+    int checkRoom(Room peek){
         return peek.getState().equals(Room.HALF_DIRTY) ? 0 : -1;
     }
     abstract String react();

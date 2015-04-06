@@ -58,6 +58,7 @@ public class Room {
      */
     public void addCreature(Creature creature) {
         Creatures.add(creature);
+        creature.setRoom(this);
     }
     /**
      * Remove creature algorithm looks through the

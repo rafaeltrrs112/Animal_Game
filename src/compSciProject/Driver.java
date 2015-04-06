@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Scanner;
 
 public class Driver {
-    public String userChoice = "";
+    private String userChoice = "";
     private PC player;
     static Scanner wait = new Scanner(System.in);
     /*
@@ -47,7 +47,6 @@ public class Driver {
     public void creatureForceMove(String name, String doorChoice) {
         LinkedList<Creature> occupants = player.getRoom().getOccupants();
         Door doors[] = player.getRoom().userGetDoors();
-        System.out.println(occupants.get(name));
         //TODO get door index us unnecessary make this piece of code better.
         int doorChoiceIndex = (player.getRoom().getDoorIndex(doorChoice));
         if(!player.getRoom().getOccupants().contains(name)){
@@ -58,9 +57,19 @@ public class Driver {
             System.out.println("Room Full Cannot Kick!");
             return;
         }
-        System.out.println("Past loops");
-        System.out.println("Occupant to move: " + occupants.get(name));
-        System.out.println("Room sending to: " + doors[doorChoiceIndex].getLeadTo().getName());
+        Room kickTo = doors[doorChoiceIndex].getLeadTo();
+        Creature creatureKicked = occupants.get(name);
+        System.out.println("\nOccupant to move: " + creatureKicked.getName());
+        System.out.println("Room sending to: " + kickTo.getName() + "\n");
+
+        if(creatureKicked.checkRoom(kickTo)==-1){
+            System.out.println(creatureKicked.getName() + creatureKicked.negativeReaction + player.getName());
+            player.decRespect();
+        }
+        else if(creatureKicked.checkRoom(kickTo) == 1){
+            System.out.println(creatureKicked.getName() + creatureKicked.positiveReaction + player.getName());
+            player.addRespect();
+        }
         occupants.get(name).leaveRoom(doors[doorChoiceIndex].getLeadTo());
     }
     /*
@@ -68,8 +77,7 @@ public class Driver {
      * Animals do not respond to the room change yet!
      */
     public void playerChangeRoomState(String state) {
-        if(player.getRoom().getState().equals(state)) {
-            System.out.println(player.getRoom().iGameStateChange(state));
+        if(player.getRoom().getState().equals(state)){
             return;
         }
         player.getRoom().iGameStateChange(state);

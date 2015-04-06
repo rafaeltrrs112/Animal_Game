@@ -28,7 +28,6 @@ public class RoomParserHandler extends DefaultHandler {
             parser.parse(inputFile, handler);
             currentRoomPosit.setRoomList(roomMap);
             currentRoomPosit.addNeighbors();
-            currentRoomPosit.getRooms();
         }
         catch (org.xml.sax.SAXException|javax.xml.parsers.ParserConfigurationException exc){
             System.out.println("Error Parsing File");
