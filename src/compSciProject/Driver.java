@@ -4,8 +4,10 @@ import compSciProject.gameTools.InputVerifier;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import static java.lang.System.out;
 import java.io.File;
 import java.util.Scanner;
+
 
 public class Driver {
     private String userChoice = "";
@@ -28,16 +30,16 @@ public class Driver {
         for(Door door:player.getRoom().userGetDoors()){
             if(door.getPosition().equals(inputPosition)){
                 if(door.getLeadTo().isFull()){
-                    System.out.println(door.getLeadTo().getName() + " is full..Cannot enter");
+                    out.println(door.getLeadTo().getName() + " is full..Cannot enter");
                     return;
                 }
-                System.out.println("Going to " + inputPosition);
+                out.println("Going to " + inputPosition);
                 door.getLeadTo().setPlayer(player);
                 player.setRoom(door.getLeadTo());
                 return;
             }
         }
-        System.out.println("Invalid room position selected!");
+        out.println("Invalid room position selected!");
     }
     /*
      * Kick out method for allowing the player to force
@@ -48,29 +50,36 @@ public class Driver {
         LinkedList<Creature> occupants = player.getRoom().getOccupants();
         Door doors[] = player.getRoom().userGetDoors();
         //TODO get door index us unnecessary make this piece of code better.
-        int doorChoiceIndex = (player.getRoom().getDoorIndex(doorChoice));
+        //int doorChoiceIndex = (player.getRoom().getDoorIndex(doorChoice));
+        Room chosenRoom = player.getRoom().getNeighbor(doorChoice);
         if(!player.getRoom().getOccupants().contains(name)){
-            System.out.println("Invalid command!");
+            out.println("Invalid command!");
             return;
         }
-        else if(doors[doorChoiceIndex].getLeadTo().isFull()){
-            System.out.println("Room Full Cannot Kick!");
+        else if(chosenRoom.isFull()){
+            out.println("Room Full Cannot Kick!");
             return;
         }
-        Room kickTo = doors[doorChoiceIndex].getLeadTo();
-        Creature creatureKicked = occupants.get(name);
-        System.out.println("\nOccupant to move: " + creatureKicked.getName());
-        System.out.println("Room sending to: " + kickTo.getName() + "\n");
+        Creature creature = occupants.get(name);
+        out.println("\nOccupant to move: " + creature.getName());
+        out.println("Room sending to: " + chosenRoom.getName() + "\n");
 
-        if(creatureKicked.checkRoom(kickTo)==-1){
-            System.out.println(creatureKicked.getName() + creatureKicked.negativeReaction + player.getName());
+        if(creature.checkRoom(chosenRoom)==-1){
+            out.println(creature.getName() + creature.negativeReaction + player.getName());
             player.decRespect();
         }
-        else if(creatureKicked.checkRoom(kickTo) == 1){
-            System.out.println(creatureKicked.getName() + creatureKicked.positiveReaction + player.getName());
+        else if(creature.checkRoom(chosenRoom) == 1){
+            out.println(creature.getName() + creature.positiveReaction + player.getName());
             player.addRespect();
         }
-        occupants.get(name).leaveRoom(doors[doorChoiceIndex].getLeadTo());
+        occupants.get(name).leaveRoom(chosenRoom);
+    }
+    /*
+     * Moved method out of Room class, this is more organized as all methods are now in driver class that correspond
+     * to menu options.
+     */
+    public String forceInhabitant(String name, String action){
+        return player.getRoom().getOccupants().get(name).react(action);
     }
     /*
      * Here they player can change the state of the room they are in.
@@ -83,10 +92,17 @@ public class Driver {
         player.getRoom().iGameStateChange(state);
         notifyCreatures();
     }
-
+    //Playing with lambdas
     public void notifyCreatures() {
-        for (Creature x : player.getRoom().getOccupants()) {
-            System.out.println(x.react());
+        player.getRoom().getOccupants().forEach(creature -> {
+            out.println(creature.react());
+        });
+    }
+    public void notifyExclude(String excName){
+        for(Creature c: player.getRoom().getOccupants()){
+            if(!c.getName().equals(excName)){
+                out.println(c.react());
+            }
         }
     }
     /*
@@ -103,7 +119,7 @@ public class Driver {
         chooser.showOpenDialog(null);
         chooser.setFileFilter(XMLFILTER);
         if (chooser.getSelectedFile() == null){
-            System.out.println("No File Save Chosen!\n" +
+            out.println("No File Save Chosen!\n" +
                                "Exiting Now");
             System.exit(0);
         }
@@ -117,9 +133,9 @@ public class Driver {
     public void runGame() {
         RoomParserHandler.run(fileChooserGUI());
         player = RoomParserHandler.currentPlayer;
-        System.out.println(introBanner() + "\n" + mainMenuMessage());
+        out.println(introBanner() + "\n" + mainMenuMessage());
         while (!userChoice.equals("exit") && playerGameStatus()==0) {
-            System.out.println(displayStatus());
+            out.println(displayStatus());
             userChoice = compSciProject.gameTools.InputVerifier.getStringInput();
 
             String []choiceInit = userChoice.split(":");
@@ -129,26 +145,26 @@ public class Driver {
                 }
                 switch (choiceInit[0]) {
                     case "look": {
-                        System.out.println(player.getRoom());
-                        System.out.print("Enter any key to continue");
+                        out.println(player.getRoom());
+                        out.print("Enter any key to continue");
                         wait.nextLine();
                         break;
                     }
                     case "clean": {
                         playerChangeRoomState(Room.CLEAN);
-                        System.out.print("Enter any key to continue");
+                        out.print("Enter any key to continue");
                         wait.nextLine();
                         break;
                     }
                     case "dirty": {
                         playerChangeRoomState(Room.DIRTY);
-                        System.out.print("Enter any key to continue");
+                        out.print("Enter any key to continue");
                         wait.nextLine();
                         break;
                     }
                     case "help": {
-                        System.out.println(helpMessage());
-                        System.out.print("Enter any key to continue");
+                        out.println(helpMessage());
+                        out.print("Enter any key to continue");
                         wait.nextLine();
                         break;
                     }
@@ -157,19 +173,29 @@ public class Driver {
             if(choiceInit.length == 2){
                 //player.getRoom().sort();
                 if(player.getRoom().getOccupants().contains(choiceInit[0])){
+                    Creature forcedCreature = player.getRoom().getOccupants().get(choiceInit[0]);
+                    String creatureType = forcedCreature.getClass().getSimpleName();
                     switch(choiceInit[1]){
                         case "clean":{
-                            System.out.println(player.getRoom().forceInhabitant(choiceInit[0], Room.CLEAN));
-                            System.out.println("Animal " + choiceInit[0] + "  " + choiceInit[1] + " s");
-                            notifyCreatures();
-                            System.out.print("Enter any key to continue");
+                            if(player.getRoom().getState().equals(Room.CLEAN)){
+                                out.println("Can't make room cleaner");
+                                break;
+                            }
+                            out.println(creatureType + " " + choiceInit[0] + " " + choiceInit[1] + "s the room by force!");
+                            out.println(forceInhabitant(choiceInit[0], Room.CLEAN));
+                            notifyExclude(choiceInit[0]);
+                            out.print("Enter any key to continue");
                             wait.nextLine();
                             break;
                         }
                         case "dirty":{
-                            System.out.println(player.getRoom().forceInhabitant(choiceInit[0],Room.DIRTY));
-                            System.out.println("Animal " + choiceInit[0] + "  " + choiceInit[1] + " s");
-                            notifyCreatures();
+                            if(player.getRoom().getState().equals(Room.DIRTY)){
+                                out.println("Can't make room dirtier");
+                                break;
+                            }
+                            out.println(creatureType + " " + choiceInit[0] + " " + choiceInit[1] + "s the room by force!");
+                            out.println(forceInhabitant(choiceInit[0], Room.DIRTY));
+                            notifyExclude(choiceInit[0]);
                             System.out.print("Enter any key to continue");
                             wait.nextLine();
                             break;
@@ -179,7 +205,7 @@ public class Driver {
                          */
                         default : {
                             if (player.getRoom().isEmpty()) {
-                                System.out.println("\nRoom is Empty No One to Kick Out\n");
+                                out.println("\nRoom is Empty No One to Kick Out\n");
 
                                 break;
                             }
@@ -195,10 +221,10 @@ public class Driver {
         //Check for the game status after player's actions take effect.
         if(playerGameStatus()!=0){
             if(playerGameStatus()==-1) {
-                System.out.println("\t\t\t\t\tGame Over You Lose\n" + gameOverBanner());
+                out.println("\t\t\t\t\tGame Over You Lose\n" + gameOverBanner());
             }
             if(playerGameStatus()==1) {
-                System.out.println("\n\t\t\t\tCongratulations You Have Won!\n" + gameWonBanner());
+                out.println("\n\t\t\t\tCongratulations You Have Won!\n" + gameWonBanner());
             }
         }
     }
@@ -332,6 +358,5 @@ public class Driver {
     public static void main(String[] args) {
         Driver runGame = new Driver();
         runGame.runGame();
-
     }
 }

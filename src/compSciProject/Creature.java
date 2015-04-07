@@ -8,7 +8,6 @@ public abstract class Creature{
     protected String positiveReaction;
     static final String DEAD = "DEAD";
     static final String DEATH = " and exits through the roof";
-    protected String roomPreference;
 
 
     public Creature(String name, String description, Room currRoom) {
@@ -34,7 +33,6 @@ public abstract class Creature{
             if (!r.isFull()) {
                 getRoom().remove(this);
                 if (checkRoom(r)!=-1) {
-                    //TODO ADDED
                     getRoom().remove(this);
                     r.addCreature(this);
                     return "CREATURE EXITING";

@@ -146,10 +146,7 @@ public class Room {
     public LinkedList<Creature> getOccupants() {
         return Creatures;
     }
-    public String forceInhabitant(String name, String action){
-        System.out.println(Creatures.get(name));
-        return Creatures.get(name).react(action);
-    }
+
     public int getPopulation(){
         return player!=null ? getOccupants().length()+1 : getOccupants().length();
     }
@@ -187,6 +184,14 @@ public class Room {
                 return i;
         }
         return -1;
+    }
+    public Room getNeighbor(String position){
+        for (Door door : doors) {
+            if(door.getPosition().equals(position)){
+                return door.getLeadTo();
+            }
+        }
+        return null;
     }
 
     /**

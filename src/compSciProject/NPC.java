@@ -1,8 +1,6 @@
 package compSciProject;
 
 public class NPC extends Creature {
-    protected String roomPreference = Room.CLEAN;
-
     public NPC(String name, String description, Room whereAt) {
         super(name, description, whereAt);
         this.negativeReaction = " grumbles at ";
@@ -27,12 +25,8 @@ public class NPC extends Creature {
         if (!getRoom().getState().equals(Room.DIRTY)) {
             reaction += negativeReaction + getRoom().getPlayer().getName();
             getRoom().getPlayer().decRespect();
-            System.out.println(getRoom().getState());
-            System.out.println(getName() + " in Room : " + getRoom().getName());
             if (getRoom().getState().equals(Room.CLEAN)) {
-                String leaveRoom=leaveRoom();
-                System.out.println(leaveRoom);
-                if(leaveRoom.equals(Creature.DEAD)){
+                if(leaveRoom().equals(Creature.DEAD)){
                     String creatureReactions = snitch();
                     return reaction + Creature.DEATH + creatureReactions;
                 }
