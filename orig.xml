@@ -1,6 +1,6 @@
 <xml version="1.0" encoding="UTF-8">
 <room name="Violet" description="a large round room with violet draperies" state="half-dirty" north="Pig" east="Student" south="Teacher" west="Green">
-    <PC name="Squash" description="one who doesn't leave the animals and NPC-s alone"/>
+    <PC name="Squash" description="one who doesn'k leave the animals and NPC-s alone"/>
     <animal name="Peter" description="a brown dog"/>
 	<animal name="Lily" description="a black and white cat"/>
 	<NPC name="Mary" description="a tall woman"/></room>
@@ -8,13 +8,13 @@
 	<animal name="Lucy" description="a pink pig"/>
 	<animal name="Mutsu" description="a black-spotted pig"/>
 </room>
-<room name="Student" description="the pigs don't like to come here" state="dirty" south="Snowy" west="Violet">
+<room name="Student" description="the pigs don'k like to come here" state="dirty" south="Snowy" west="Violet">
   <NPC name="Jeremy" description="a student who writes Java projects in the very last moment"/>
-  <NPC name="Martina" description="a student who doesn't write Java projects at all"/>
-  <NPC name="Lewell" description="a student who doesn't even know what a Java project is"/>
+  <NPC name="Martina" description="a student who doesn'k write Java projects at all"/>
+  <NPC name="Lewell" description="a student who doesn'k even know what a Java project is"/>
   <NPC name="Ema" description="a student who always writes Java projects on time"/>
 </room>
-<room name="Teacher" description="the pigs don't like to come here either" state="dirty" north="Violet" east="Snowy" west="Drafty">
+<room name="Teacher" description="the pigs don'k like to come here either" state="dirty" north="Violet" east="Snowy" west="Drafty">
   <NPC name="Pencho" description="students always fall asleep in his class"/>
   <NPC name="Divachka" description="a teacher who falls asleep in her own classes"/>
 </room>  
@@ -41,7 +41,7 @@
   <animal	name="Marko" description="a gray donkey"/>
   <animal name="Moo" description="a jersey cow"/>
 </room>
-<room	name="Snowy" description="this one is inaccessible November-March if you don't have a shovel" state="clean" north="Student" west="Teacher">
+<room	name="Snowy" description="this one is inaccessible November-March if you don'k have a shovel" state="clean" north="Student" west="Teacher">
   <animal	name="Polly" description="a polar bear"/>
   <animal	name="Pen" description="a penguin"/>
 </room>

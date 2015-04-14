@@ -1,63 +1,28 @@
 package compSciProject;
-import java.util.*;
 
 //Generic and iterable linked list.
-public class LinkedList<T> implements Iterable<T> {
     //Inner class Node to be used during instance of Linked List only.
-    private class Node<T>{
-        private T data;
-        private Node<T> next;
-        private Node<T> prev;
-
-        private Node(T objectData){
-            data = objectData;
-            next = null;
-        }
-
-        private Node(T objectData, Node next){
-            this.data = objectData;
-            this.next = next;
-        }
-
-        private T getData() {
-            return data;
-        }
-
-        private Node getNext() {
-            return next;
-        }
-
-        private void setNext(Node next) {
-            this.next = next;
-            next.prev = this;
-        }
-
-        public String toString(){
-            return data.toString();
-        }
-    }
-
+public class LinkedList<K, E>{
     private int length;
-    private Node<T> head;
-    private Node<T> tail;
+    private Node<K, E> head;
+    private Node<K, E> tail;
 
 
     public LinkedList() {
         length = 0;
         head = null;
     }
-    @SafeVarargs
-    public LinkedList(T ... E){
-        length = E.length;
-        head = null;
-        for(T element : E){
-            add(element);
-        }
-    }
+    //public LinkedList(E... E){
+       // length = E.length;
+       // head = null;
+        //for(E element : E){
+        //    add();
+       // }
+    //}
 
     //If head is equal to tail then list is a singleton
-    public void add(T objectData) {
-        Node<T> addToList = new Node<>(objectData);
+    public void add(K key, E element) {
+        Node<K, E> addToList = new Node<>(key, element);
         if (head == null) {
             head = addToList;
             length++;
@@ -69,25 +34,30 @@ public class LinkedList<T> implements Iterable<T> {
         tail = addToList;
         length++;
     }
-    public T get(String check){
-        Node<T> node = head;
+    /**
+     * E gets a node with a specific key, and return the node's element
+     *  only
+     */
+    public E get(String key){
+        Node<K, E> node = head;
         while (node != null) {
-            T currentValue = node.getData();
-            if (currentValue.equals(check)) return currentValue;
+            K currentKey = node.getKey();
+            if (currentKey.equals(key)) return node.getElement();
             node = node.getNext();
         }
         return null;
     }
 
-    public boolean remove(String removeObject) {
-        if (!contains(removeObject)) {
+    public boolean remove(String key) {
+        if (!contains(key)) {
             return false;
         } else {
+            
             length--;
-            Node<T> current = head;
+            Node<K, E> current = head;
             while (current != null) {
-                T currentValue = current.getData();
-                if (currentValue.equals(removeObject)) {
+                K currentKey = current.getKey();
+                if (currentKey.equals(key)) {
                     if (current.prev != null) {
                         current.prev.next = current.next;
                         if (current.next != null) {
@@ -111,47 +81,107 @@ public class LinkedList<T> implements Iterable<T> {
         return false;
     }
 
-    public boolean contains(String check){
-        Node<T> node = head;
+    public boolean contains(String key){
+        Node<K, E> node = head;
         while (node != null) {
-            T currentValue = node.getData();
-            if (currentValue.equals(check)) return true;
+            K currentKey = node.getKey();
+            if (currentKey.equals(key)) return true;
             node = node.getNext();
         }
         return false;
+    }
+    public void print(){
+        Node<K, E> node = head;
+        while (node != null) {
+            System.out.println(node);
+            node = node.getNext();
+        }
     }
 
     public int length() {
         return length;
     }
+    class Node<K, E>{
+        private K key;
+        private E element;
+        private Node<K, E> next;
+        private Node<K, E> prev;
+
+        public Node(K key, E element){
+            this.key = key;
+            this.element = element;
+            this.next = null;
+        }
+
+        public Node(K objectData, Node next){
+            this.key = objectData;
+            this.next = next;
+        }
+
+        public K getKey() {
+            return key;
+        }
+        public E getElement(){
+            return element;
+        }
+
+        public Node getNext() {
+            return next;
+        }
+
+        public void setKey(K key) {
+            this.key = key;
+        }
+
+        public void setElement(E element) {
+            this.element = element;
+        }
+
+        public Node<K, E> getPrev() {
+            return prev;
+        }
+
+        public void setPrev(Node<K, E> prev) {
+            this.prev = prev;
+        }
+
+        private void setNext(Node next) {
+            this.next = next;
+            next.prev = this;
+        }
+
+        public String toString(){
+            return "Node" + key.toString() + " "  + element.toString();
+        }
+    }
 
     //Iterator method for Linked List class returns the iterator nested class
-    public Iterator<T> iterator() {
-        return new LinkedListIterator();
-    }
+    //public Iterator<E> iterator() {
+      //  return new LinkedListIterator();
+    //}
 
     //Iterator implementation implements the Iterator interface
-    private class LinkedListIterator implements Iterator<T> {
-        private Node<T> nextNode;
+    //private class LinkedListIterator implements Iterator<E> {
+     //   private private Node<K, E> nextNode;
 
-        public LinkedListIterator() {
-            nextNode = head;
-        }
+      //  public LinkedListIterator() {
+       //     nextNode = head;
+      //  }
 
-        public boolean hasNext() {
-            return nextNode != null;
-        }
+       // public boolean hasNext() {
+       //     return nextNode != null;
+       // }
 
-        public T next() {
-            if (!hasNext()) throw new NoSuchElementException();
-            T res = nextNode.data;
-            nextNode = nextNode.next;
-            return res;
-        }
+      //  public E next() {
+      //      if (!hasNext()) throw new NoSuchElementException();
+      //      E res = nextNode.data;
+      //      nextNode = nextNode.next;
+      //      return res;
+      //  }
 
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
+       // public void remove() {
+      //      throw new UnsupportedOperationException();
+      //  }
+   // }
 
 }

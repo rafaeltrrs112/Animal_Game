@@ -1,7 +1,7 @@
 package compSciProject.gameTools;
+import compSciProject.LinkedList;
+
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static java.lang.Math.abs;
 
@@ -9,56 +9,57 @@ import static java.lang.Math.abs;
  * Created by rtorres12 on 4/6/15.
  *
  */
-class growArray<T, E>{
+class growArray<K, E>{
     int size;
-    T[] array;
+    LinkedList<K, E>[] array;
     int addcount;
-    ArrayList<E> keyList = new ArrayList<>();
+    ArrayList<K> keyList = new ArrayList<>();
 
     public growArray(int length){
         this.size = length;
-        array = (T[]) new Object[this.size];
+        array = new LinkedList[length];
     }
-    public void add(T element, E keyHold){
-        keyList.add(keyHold);
+    public void add(K key, E element){
+        keyList.add(key);
         addcount++;
         if(addcount == size){
             this.size *=2;
-            T[] newArray = (T[]) new Object[this.size];
+            LinkedList<K, E> newArray[] = new LinkedList[size*2];
             for(int i=0;i<size/2;i++){
                 newArray[keyList.get(i).hashCode()%size] = array[keyList.get(i).hashCode()%(size/2)];
             }
             array = newArray;
-            array[keyHold.hashCode()%size] = element;
+            array[element.hashCode()%size].add(key,element);
             return;
         }
-        System.out.println(keyHold.hashCode());
-        array[abs(keyHold.hashCode())%size]= element;
+        System.out.println(element.hashCode());
+        array[abs(element.hashCode())%size].add(key,element);
     }
-    public T get(int index){
-        return array[index];
+    public E get(String key){
+        int hashKey = abs(key.hashCode());
+        return array[hashKey].get(key);
     }
     public void print(){
-        for (T t : array) {
-            if(t!=null)
-            System.out.println(t);
+        for (LinkedList k : array) {
+            if(k !=null)
+            k.print();
         }
     }
 }
 public class hashMap<K, E> {
-    growArray<E,K> elementsArray;
+    growArray<K, E> elementsArray;
 
     public hashMap() {
         elementsArray = new growArray<>(10);
     }
 
     void insert(K key, E element){
-        elementsArray.add(element, key);
+        elementsArray.add(key, element);
     }
 
     E get(String key){
         //System.out.println(elementsArray.get(key.hashCode()%elementsArray.size));
-        return elementsArray.get(key.hashCode()%elementsArray.size);
+        return elementsArray.get(key);
     }
 
     public static void main(String[] args) {
