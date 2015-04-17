@@ -1,6 +1,5 @@
+//TODO Redo door handling. Door's are not being assigned properly now.
 package compSciProject;
-
-
 import java.util.HashMap;
 import java.util.*;
 import compSciProject.gameTools.hashMap;
@@ -19,7 +18,7 @@ public class roomHolder {
     }
 
     public  void addRoomPosits(String roomName, String neighborPosition, String neighborName){
-        //System.out.println(roomName + " door : " + neighborPosition + " leads to room: " + neighborName);
+        System.out.println(roomName + " door : " + neighborPosition + " leads to room: " + neighborName);
 
         if(!roomMap.containsKey(roomName)){
             roomMap.put(roomName, new HashMap<>());
@@ -34,6 +33,7 @@ public class roomHolder {
         Iterator it = mp.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
+            System.out.println(pair.getKey());
             roomList.insert(pair.getKey().toString(), mp.get(pair.getKey()));
             it.remove(); // avoids a ConcurrentModificationException
         }
@@ -42,7 +42,7 @@ public class roomHolder {
         Iterator it = roomMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
-            //System.out.println(pair.getKey() + " " + pair.getValue());
+            System.out.println(pair.getKey() + " " + pair.getValue());
             for(Room r: roomList){
                 if(pair.getKey().equals(r.getName())){
                     for(String x: roomPositions){

@@ -34,13 +34,13 @@ public abstract class Creature{
                 getRoom().remove(this);
                 if (checkRoom(r)!=-1) {
                     getRoom().remove(this);
-                    r.addCreature(this);
+                    r.insertCreature(this);
                     return "CREATURE EXITING";
                 }
                 else if(checkRoom(r) == -1){
                     r.setState(Room.HALF_DIRTY);
                     getRoom().remove(this);
-                    r.addCreature(this);
+                    r.insertCreature(this);
                     return "CREATURE ENTERING/STATE CHANGE: HALF DIRTY";
                 }
             }
@@ -53,13 +53,13 @@ public abstract class Creature{
         System.out.println(r.getName());
         if (checkRoom(r)!=-1) {
             getRoom().remove(this);
-            r.addCreature(this);
+            r.insertCreature(this);
             return getName() + " content with room ";
         }
         else if(checkRoom(r) == -1) {
             r.setState(Room.HALF_DIRTY);
             getRoom().remove(this);
-            r.addCreature(this);
+            r.insertCreature(this);
             return getName() + " had to change the room state ";
         }
         return getName() + " was unable to leave the room and crawled out through" +

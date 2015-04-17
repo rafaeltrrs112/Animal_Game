@@ -60,7 +60,7 @@ public class inputParser {
                         Element aElement = (Element) aNode;
                         String aniName = aElement.getAttribute("name");
                         String aniDescription = aElement.getAttribute("description");
-                        rooms[temp].addCreature(new Animal(aniName, aniDescription, rooms[temp]));
+                        rooms[temp].insertCreature(new Animal(aniName, aniDescription, rooms[temp]));
                     }
 
                     NodeList nNpc = eElement.getElementsByTagName("NPC");
@@ -70,7 +70,7 @@ public class inputParser {
                         Element nPcElement = (Element) aNode;
                         String nPCname = nPcElement.getAttribute("name");
                         String nPcDescription = nPcElement.getAttribute("description");
-                        rooms[temp].addCreature(new NPC(nPCname, nPcDescription, rooms[temp]));
+                        rooms[temp].insertCreature(new NPC(nPCname, nPcDescription, rooms[temp]));
                     }
 
                     NodeList pC = eElement.getElementsByTagName("PC");
@@ -97,7 +97,7 @@ public class inputParser {
                         rElement.getAttribute(x);
                         for (Room room : rooms) {
                             if (room.getName().equals(rElement.getAttribute(x))) {
-                                currRoom.addNeighbor(room, x);
+                                currRoom.insertNeighbor(room, x);
                             }
                         }
                     }

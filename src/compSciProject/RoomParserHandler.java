@@ -15,7 +15,7 @@ public class RoomParserHandler extends DefaultHandler {
     static HashMap<String, String> roomFieldMap = new HashMap<>();
     static HashMap<String, String> creatureFieldMap = new HashMap<>();
     static HashMap<String, Room> roomMap = new HashMap<>();
-    static LinkedList<String> roomPositions = new LinkedList<>(Door.positions);
+    static ArrayList<String> roomPositions = new ArrayList<>();
     static roomHolder currentRoomPosit = new roomHolder();
     static public PC currentPlayer;
 
@@ -65,7 +65,7 @@ public class RoomParserHandler extends DefaultHandler {
                     String attrVal = attributes.getValue(i);
                     creatureFieldMap.put(attrName, attrVal);
                 }
-                roomMap.get(currentRoom.getName()).addCreature(new Animal(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
+                roomMap.get(currentRoom.getName()).insertCreature(new Animal(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
                 //System.out.println(currentRoom);
                 break;
             }
@@ -75,7 +75,7 @@ public class RoomParserHandler extends DefaultHandler {
                     String attrVal = attributes.getValue(i);
                     creatureFieldMap.put(attrName, attrVal);
                 }
-                roomMap.get(currentRoom.getName()).addCreature(new NPC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
+                roomMap.get(currentRoom.getName()).insertCreature(new NPC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
                 //System.out.println(currentRoom);
                 break;
             }
