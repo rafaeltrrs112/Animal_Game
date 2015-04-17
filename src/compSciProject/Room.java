@@ -1,7 +1,9 @@
 package compSciProject;
 
 import compSciProject.gameTools.elemRandom;
+import java.util.HashMap;
 import static java.lang.System.arraycopy;
+import compSciProject.gameTools.hashMap;
 /**
  * Room class holds up to ten occupants including the player!
  * Two arrays are made, one holds the NPCs the other holds the Animals
@@ -23,7 +25,7 @@ public class Room {
     private  String name;
     private  String description;
     private String state;
-    private LinkedList<Creature> Creatures = new LinkedList<>();
+    private hashMap<String, Creature> Creatures = new hashMap<>();
     private int doorCount = 0;
     private Door[] doors = new Door[1];
     private PC player;
@@ -36,9 +38,9 @@ public class Room {
     }
 
     /**
-     * Add neighbor to Room using a variable length array.
+     * insert neighbor to Room using a variable length array.
      */
-    public void addNeighbor(Room roomNew, String posit) {
+    public void insertNeighbor(Room roomNew, String posit) {
         if (doorCount == 0) {
             doorCount++;
             this.doors[0] = new Door(roomNew, posit);
@@ -52,12 +54,12 @@ public class Room {
         this.doors = newDoors;
     }
     /**
-     * Add creature is a fail soft array implementation. I am currently
+     * insert creature is a fail soft array implementation. I am currently
      * thinking of just making a separate fail soft array class and using
      * that instead of having a while entire method here.
      */
-    public void addCreature(Creature creature) {
-        Creatures.add(creature);
+    public void insertCreature(Creature creature) {
+        Creatures.insert(creature.getName(), creature);
         creature.setRoom(this);
     }
     /**
@@ -143,7 +145,7 @@ public class Room {
      * Get occupants returns a specific array that will not contain
      * any null space! This allows for clean enhanced loops.
      */
-    public LinkedList<Creature> getOccupants() {
+    public hashMap<String, Creature> getOccupants() {
         return Creatures;
     }
 

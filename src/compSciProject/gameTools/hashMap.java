@@ -2,18 +2,17 @@ package compSciProject.gameTools;
 import compSciProject.LinkedList;
 
 import java.util.ArrayList;
-
 import static java.lang.Math.abs;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-/**
- * Created by rtorres12 on 4/6/15.
- *
- */
+
+
 class growArray<K, E>{
     int size;
-    LinkedList<K, E>[] array;
+    public LinkedList<K, E>[] array;
     int addcount;
-    ArrayList<K> keyList = new ArrayList<>();
+    public ArrayList<K> keyList = new ArrayList<>();
 
     public growArray(int length){
         this.size = length;
@@ -21,75 +20,120 @@ class growArray<K, E>{
     }
     public void add(K key, E element){
         keyList.add(key);
-        addcount++;
         if(addcount == size){
+            addcount++;
             this.size *=2;
             LinkedList<K, E> newArray[] = new LinkedList[size*2];
             for(int i=0;i<size/2;i++){
                 newArray[keyList.get(i).hashCode()%size] = array[keyList.get(i).hashCode()%(size/2)];
             }
+            int hashKey = abs(key.hashCode()%size);
+            System.out.println();
             array = newArray;
-            array[element.hashCode()%size].add(key,element);
+            array[hashKey].add(key,element);
             return;
         }
-        System.out.println(element.hashCode());
-        array[abs(element.hashCode())%size].add(key,element);
+        int hashKey = abs(key.hashCode()%size);
+        System.out.println(hashKey);
+        if(array[hashKey] == null) {
+            array[hashKey] = new LinkedList<>();
+            array[hashKey % size].add(key, element);
+        }
+        else{
+            array[hashKey].add(key,element);
+        }
     }
-    public E get(String key){
-        int hashKey = abs(key.hashCode());
+    public boolean remove(K key){
+        for(LinkedList k: array){
+            if(k!=null){
+                if(k.contains(key)){
+                    k.remove(key);
+                    keyList.remove(key);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public E get(K key){
+        int hashKey = abs(key.hashCode()%size);
         return array[hashKey].get(key);
     }
     public void print(){
         for (LinkedList k : array) {
             if(k !=null)
-            k.print();
+                k.print();
         }
     }
 }
-public class hashMap<K, E> {
+public class hashMap<K, E> implements Iterable<E> {
     growArray<K, E> elementsArray;
 
     public hashMap() {
         elementsArray = new growArray<>(10);
     }
 
-    void insert(K key, E element){
+    public void insert(K key, E element){
         elementsArray.add(key, element);
     }
 
-    E get(String key){
-        //System.out.println(elementsArray.get(key.hashCode()%elementsArray.size));
+    public E get(K key){
         return elementsArray.get(key);
     }
+    public void print(){
+        elementsArray.print();
+    }
 
+    public boolean remove(K key){
+        return elementsArray.remove(key);
+    }
+    public boolean contains(K key){
+        return (elementsArray.array[abs(key.hashCode())%elementsArray.array.length].contains(key));
+    }
+    //Todo add a contains check for elements method, one for get element, and another for return list of keys.
+    //Iterator method for HashMap class to make it iterable and linkable.
+    public Iterator<E> iterator() {
+        return new LinkedListIterator();
+    }
+
+    //Iterator implementation implements the Iterator interface
+    private class LinkedListIterator implements Iterator<E> {
+        private int countOut = elementsArray.keyList.size()-1;
+        private ArrayList<K> keys = elementsArray.keyList;
+        private K currentKey;
+
+        public LinkedListIterator() {
+            this.currentKey = keys.get(countOut);
+        }
+
+        public boolean hasNext() {
+            if(keys.size()==0){
+                return false;
+            }
+            else if(countOut==-1){
+                return false;
+            }
+            return true;
+        }
+        public E next() {
+            if (!hasNext()) throw new NoSuchElementException();
+            K res = keys.get(countOut);
+            currentKey = keys.get(countOut);
+            --countOut;
+            if(get(res)==null){
+                //Lame way to lose my recursion virginity :( .
+                return next();
+            }
+            return get(res);
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+    public int length(){
+        return elementsArray.keyList.size();
+    }
     public static void main(String[] args) {
-        hashMap<String, String> mapTest = new hashMap<>();
-        String test = "Hello";
-        mapTest.insert("New York", "Albany");
-        mapTest.insert("Alaska", "Cold");
-        mapTest.insert("Kentucky", "Chicken");
-        mapTest.insert("Brazil", "Jiu Jitsu");
-        mapTest.insert("Japan", "Anime");
-        mapTest.insert("Korea", "K-Pop");
-        mapTest.insert("North Korea", "Not-MUCH");
-        mapTest.insert("New York City", "Jay Z");
-        mapTest.insert("Brooklyn", "Thugs");
-        mapTest.insert("Europe", "Game of Thrones");
-        mapTest.insert("Airplanes", "In the Sky");
-        mapTest.insert("South Africe", "Apartheid");
-        mapTest.insert("North America", "Murrica");
-        mapTest.insert("Alabama", "Stating");
-        System.out.println(mapTest.get("New York"));
-        System.out.println(mapTest.get("Alaska"));
-        System.out.println(mapTest.get("Kentucky"));
-        System.out.println(mapTest.get("Brazil"));
-        System.out.println(mapTest.get("Japan"));
-        System.out.println(mapTest.get("Korea"));
-        System.out.println(mapTest.get("North Korea"));
-        System.out.println(mapTest.get("Alabama"));
-        //for(int i=0;i<25;i++){
-        //    testingArray.add(i,i);
-        //}
-        //testingArray.print();
     }
 }

@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import static java.lang.System.out;
 import java.io.File;
+import compSciProject.gameTools.hashMap;
 import java.util.Scanner;
 
 
@@ -47,7 +48,7 @@ public class Driver {
      * the room they are being kicked too if they don't like it!
      */
     public void creatureForceMove(String name, String doorChoice) {
-        LinkedList<Creature> occupants = player.getRoom().getOccupants();
+        hashMap<String ,Creature> occupants = player.getRoom().getOccupants();
         Door doors[] = player.getRoom().userGetDoors();
         //TODO get door index us unnecessary make this piece of code better.
         //int doorChoiceIndex = (player.getRoom().getDoorIndex(doorChoice));

@@ -1,10 +1,10 @@
 package compSciProject;
 
-public class Node<K, E>{
-    private K key;
-    private E element;
-    private Node<K, E> next;
-    private Node<K, E> prev;
+class Node<K, E>{
+    public K key;
+    public E element;
+    public Node<K, E> next;
+    public Node<K, E> prev;
 
     public Node(K key, E element){
         this.key = key;
@@ -44,12 +44,12 @@ public class Node<K, E>{
         this.prev = prev;
     }
 
-    private void setNext(Node next) {
+    public void setNext(Node next) {
         this.next = next;
         next.prev = this;
     }
 
     public String toString(){
-        return "Node" + key.toString() + " "  + element.toString();
+        return key.toString() + " "  + element.toString();
     }
 }

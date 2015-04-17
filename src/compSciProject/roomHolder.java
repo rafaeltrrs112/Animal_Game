@@ -3,12 +3,14 @@ package compSciProject;
 
 import java.util.HashMap;
 import java.util.*;
+import compSciProject.gameTools.hashMap;
 
 public class roomHolder {
     //roomMap is for getting the position.
     public HashMap<String, HashMap<String, String>> roomMap = new HashMap<>();
     //This is the final list of rooms that have been added.
-    public LinkedList<Room> roomList = new LinkedList<>();
+    //Maybe this doesn't have to be removed...hmm???...
+    public hashMap<String, Room> roomList = new hashMap<>();
     public HashMap<String, Room> roomSourceMap = new HashMap<>();
     public String[] roomPositions = {Door.NORTH, Door.SOUTH, Door.EAST, Door.WEST};
 
@@ -32,7 +34,7 @@ public class roomHolder {
         Iterator it = mp.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            roomList.add(mp.get(pair.getKey()));
+            roomList.insert(pair.getKey().toString(), mp.get(pair.getKey()));
             it.remove(); // avoids a ConcurrentModificationException
         }
     }
@@ -45,7 +47,7 @@ public class roomHolder {
                 if(pair.getKey().equals(r.getName())){
                     for(String x: roomPositions){
                         if(roomMap.get(r.getName()).containsKey(x)){
-                            r.addNeighbor(  roomSourceMap.get((roomMap.get(r.getName()).get(x))), x);
+                            r.insertNeighbor(roomSourceMap.get((roomMap.get(r.getName()).get(x))), x);
                         }
                     }
                 }
