@@ -27,31 +27,20 @@ public class Room {
     private String state;
     private hashMap<String, Creature> Creatures = new hashMap<>();
     private int doorCount = 0;
-    private Door[] doors = new Door[1];
+    private hashMap<String, Room> doors = new hashMap<>();
     private PC player;
 
     public Room(String name, String description, String state) {
         this.description = description;
         this.state = state;
         this.name = name;
-        this.doors = new Door[1];
     }
 
     /**
      * insert neighbor to Room using a variable length array.
      */
     public void insertNeighbor(Room roomNew, String posit) {
-        if (doorCount == 0) {
-            doorCount++;
-            this.doors[0] = new Door(roomNew, posit);
-            return;
-        }
-        doorCount++;
-        int size = this.doors.length + 1;
-        Door[] newDoors = new Door[size];
-        arraycopy(this.doors, 0, newDoors, 0, size - 1);
-        newDoors[size - 1] = new Door(roomNew, posit);
-        this.doors = newDoors;
+        this.doors.insert(posit, roomNew);
     }
     /**
      * insert creature is a fail soft array implementation. I am currently
@@ -118,12 +107,13 @@ public class Room {
         return state;
     }
 
-    public Door[] getDoors() {
-        elemRandom.randRooms(this.doors);
+    public hashMap<String, Room> getDoors() {
+        //Randomize here first
+        elemRandom.randRooms();
         return this.doors;
     }
 
-    public Door[] userGetDoors() {
+    public hashMap<String, Room> userGetDoors() {
         return this.doors;
     }
 

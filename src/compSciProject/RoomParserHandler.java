@@ -12,12 +12,16 @@ import java.io.File;
 
 public class RoomParserHandler extends DefaultHandler {
     static Room currentRoom;
+    //Used to hold the attributes for creature class creations
     static HashMap<String, String> roomFieldMap = new HashMap<>();
     static HashMap<String, String> creatureFieldMap = new HashMap<>();
+    //Holds a hashmap with the created rooms with room's name as key
     static HashMap<String, Room> roomMap = new HashMap<>();
-    static ArrayList<String> roomPositions = new ArrayList<>();
-    static roomHolder currentRoomPosit = new roomHolder();
+
+    static String[] roomPositions = {"north","south","east","west"};
     static public PC currentPlayer;
+    //Used to store doors data
+    static HashMap<String, String> doorsMap = new HashMap<>();
 
 
     public static void run(File inputFile){
@@ -26,8 +30,7 @@ public class RoomParserHandler extends DefaultHandler {
             SAXParser parser = factory.newSAXParser();
             RoomParserHandler handler = new RoomParserHandler();
             parser.parse(inputFile, handler);
-            currentRoomPosit.setRoomList(roomMap);
-            currentRoomPosit.addNeighbors();
+
         }
         catch (org.xml.sax.SAXException|javax.xml.parsers.ParserConfigurationException exc){
             System.out.println("Error Parsing File");
@@ -35,25 +38,36 @@ public class RoomParserHandler extends DefaultHandler {
         catch(IOException exc){
             System.out.println("Error Obtaining File");
         }
+        for(Room r: roomMap.values()){
+            String[] positionSet = doorsMap.get(r.getName()).split("__");
+            for(String s: positionSet){
+                String[] tempDoorHolder = s.split(":");
+                r.insertNeighbor(roomMap.get(s.split(":")[1]), tempDoorHolder[0]);
+            }
+        }
     }
 
-    public  void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
+    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException{
         int attributeLength = attributes.getLength();
         switch(qName) {
             case "room":{
                 for (int i = 0; i < attributeLength; i++) {
-
                     String attrName = attributes.getQName(i);
                     String attrVal = attributes.getValue(i);
-                    //System.out.println(attrName + " = " + attrVal + "; ");
                     roomFieldMap.put(attrName, attrVal);
                 }
                 Room testRoom = new Room(roomFieldMap.get("name"), roomFieldMap.get("description"), roomFieldMap.get("state"));
                 currentRoom = testRoom;
                 roomMap.put(testRoom.getName(), testRoom);
                 for (String x : roomPositions) {
-                    if (roomFieldMap.containsKey(x)) {
-                        currentRoomPosit.addRoomPosits(currentRoom.getName(), x, roomFieldMap.get(x));
+                    if (roomFieldMap.containsKey(x)){
+                        if (!doorsMap.containsKey(currentRoom.getName())){
+                            doorsMap.put(currentRoom.getName(), (x + ":" + roomFieldMap.get(x)));
+                        }
+                        else{
+                            String positCode = doorsMap.get(currentRoom.getName()) + "__" + (x + ":" + roomFieldMap.get(x));
+                            doorsMap.replace(currentRoom.getName(), positCode);
+                        }
                     }
                 }
                 roomFieldMap.clear();
@@ -76,7 +90,6 @@ public class RoomParserHandler extends DefaultHandler {
                     creatureFieldMap.put(attrName, attrVal);
                 }
                 roomMap.get(currentRoom.getName()).insertCreature(new NPC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
-                //System.out.println(currentRoom);
                 break;
             }
             case "PC":{
@@ -88,7 +101,6 @@ public class RoomParserHandler extends DefaultHandler {
                 PC currentPlayer = (new PC(creatureFieldMap.get("name"), creatureFieldMap.get("description"), currentRoom));
                 currentRoom.setPlayer(currentPlayer);
                 RoomParserHandler.currentPlayer = currentPlayer;
-                //System.out.println(currentRoom);
                 break;
             }
         }

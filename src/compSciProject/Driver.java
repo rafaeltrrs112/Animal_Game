@@ -207,9 +207,9 @@ public class Driver {
                         default : {
                             if (player.getRoom().isEmpty()) {
                                 out.println("\nRoom is Empty No One to Kick Out\n");
-
                                 break;
                             }
+                            //TODO Peter:fasjflasdkfj crashes game implement contains method
                             creatureForceMove(choiceInit[0], choiceInit[1]);
                             System.out.print("Enter any key to continue");
                             wait.nextLine();
